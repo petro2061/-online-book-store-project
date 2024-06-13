@@ -56,5 +56,5 @@ Someone who arranges the books on the shelf and watches what gets bought.
 - Change details of a section.
 - Remove a section.
 ##### 3. Look at and change receipts:
-Change the status of a receipt, like "Shipped" or "Delivered".
-  
+- Change the status of a receipt, like "Shipped" or "Delivered".
+
