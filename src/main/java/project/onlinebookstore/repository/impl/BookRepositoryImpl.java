@@ -1,25 +1,22 @@
 package project.onlinebookstore.repository.impl;
 
 import java.util.List;
+import java.util.Optional;
+import lombok.RequiredArgsConstructor;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import project.onlinebookstore.exception.DataProcessingException;
 import project.onlinebookstore.model.Book;
 import project.onlinebookstore.repository.BookRepository;
 
+@RequiredArgsConstructor
 @Repository
 public class BookRepositoryImpl implements BookRepository {
     private static final String FIND_ALL_BOOK_QUERY = "FROM Book";
     private final SessionFactory sessionFactory;
-
-    @Autowired
-    public BookRepositoryImpl(SessionFactory sessionFactory) {
-        this.sessionFactory = sessionFactory;
-    }
 
     @Override
     public Book save(Book book) {
@@ -52,6 +49,16 @@ public class BookRepositoryImpl implements BookRepository {
             return allFromBookQuery.getResultList();
         } catch (Exception e) {
             throw new DataProcessingException("Can't find all books in DB", e);
+        }
+    }
+
+    @Override
+    public Optional<Book> findById(Long id) {
+        try (Session session = sessionFactory.openSession()) {
+            Book bookById = session.get(Book.class, id);
+            return Optional.ofNullable(bookById);
+        } catch (Exception e) {
+            throw new DataProcessingException("Can not find book by id: " + id, e);
         }
     }
 }
