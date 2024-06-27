@@ -1,6 +1,7 @@
 package project.onlinebookstore.service.impl;
 
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -19,15 +20,14 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public BookDto save(CreateBookRequestDto bookRequestDto) {
-        Book bookModelForSave =
+        Book book =
                 bookRepository.save(bookMapper.toBookModel(bookRequestDto));
-        return bookMapper.toBookDto(bookModelForSave);
+        return bookMapper.toBookDto(book);
     }
 
     @Override
     public List<BookDto> findAll() {
-        List<Book> allBookFromRepository = bookRepository.findAll();
-        return allBookFromRepository
+        return bookRepository.findAll()
                 .stream()
                 .map(bookMapper::toBookDto)
                 .toList();
@@ -45,6 +45,7 @@ public class BookServiceImpl implements BookService {
         bookRepository.deleteById(id);
     }
 
+    @Transactional
     @Override
     public BookDto updateById(Long id, CreateBookRequestDto bookDto) {
         Book book = bookRepository.findById(id).orElseThrow(() ->
