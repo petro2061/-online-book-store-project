@@ -8,16 +8,14 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import java.math.BigDecimal;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.SQLDelete;
-import org.hibernate.annotations.Where;
+import org.hibernate.annotations.SQLRestriction;
 
 @Setter
 @Getter
-@RequiredArgsConstructor
 @SQLDelete(sql = "UPDATE books SET is_deleted = true WHERE id =?")
-@Where(clause = "is_deleted = false")
+@SQLRestriction(value = "is_deleted = false")
 @Entity
 @Table(name = "books")
 public class Book {
@@ -37,17 +35,4 @@ public class Book {
     @Column(nullable = false)
     private boolean isDeleted = false;
 
-    @Override
-    public String toString() {
-        return "Book{"
-                + "id=" + id
-                + ", title='" + title + '\''
-                + ", author='" + author + '\''
-                + ", isbn='" + isbn + '\''
-                + ", price=" + price
-                + ", description='" + description + '\''
-                + ", coverImage='" + coverImage + '\''
-                + ", isDeleted=" + isDeleted
-                + '}';
-    }
 }
