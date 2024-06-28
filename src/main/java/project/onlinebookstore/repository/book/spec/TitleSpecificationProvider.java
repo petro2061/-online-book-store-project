@@ -1,10 +1,10 @@
 package project.onlinebookstore.repository.book.spec;
 
+import java.util.Arrays;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
 import project.onlinebookstore.model.Book;
 import project.onlinebookstore.repository.SpecificationProvider;
-import java.util.Arrays;
 
 @Component
 public class TitleSpecificationProvider implements SpecificationProvider<Book> {

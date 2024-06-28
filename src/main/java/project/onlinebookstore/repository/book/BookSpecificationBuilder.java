@@ -1,5 +1,7 @@
 package project.onlinebookstore.repository.book;
 
+import java.math.BigDecimal;
+import java.util.Arrays;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
@@ -7,8 +9,6 @@ import project.onlinebookstore.dto.BookSearchParameters;
 import project.onlinebookstore.model.Book;
 import project.onlinebookstore.repository.SpecificationBuilder;
 import project.onlinebookstore.repository.SpecificationProviderManager;
-import java.math.BigDecimal;
-import java.util.Arrays;
 
 @Component
 @RequiredArgsConstructor
@@ -27,8 +27,8 @@ public class BookSpecificationBuilder implements SpecificationBuilder<Book> {
                     .getSpecification(searchParameters.titles()));
         }
 
-        if (searchParameters.prices() != null &&
-                searchParameters.prices().length > 0) {
+        if (searchParameters.prices() != null
+                && searchParameters.prices().length > 0) {
             String[] bigDecimalPriceToString =
                     Arrays.stream(searchParameters.prices())
                             .map(BigDecimal::toString)
