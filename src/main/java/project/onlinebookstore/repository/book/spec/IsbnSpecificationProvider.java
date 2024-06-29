@@ -8,14 +8,16 @@ import project.onlinebookstore.repository.SpecificationProvider;
 
 @Component
 public class IsbnSpecificationProvider implements SpecificationProvider<Book> {
+    private static final String ISBN_FIELD_PARAMETER = "isbn";
+
     @Override
     public Specification<Book> getSpecification(String[] params) {
         return (root, query, criteriaBuilder) ->
-                root.get("isbn").in(Arrays.stream(params).toList());
+                root.get(ISBN_FIELD_PARAMETER).in(Arrays.stream(params).toList());
     }
 
     @Override
     public String getKey() {
-        return "isbn";
+        return ISBN_FIELD_PARAMETER;
     }
 }
