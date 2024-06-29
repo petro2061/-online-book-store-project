@@ -8,14 +8,16 @@ import project.onlinebookstore.repository.SpecificationProvider;
 
 @Component
 public class AuthorSpecificationProvider implements SpecificationProvider<Book> {
+    private static final String AUTHOR_FIELD_PARAMETER = "author";
+
     @Override
     public Specification<Book> getSpecification(String[] params) {
         return (root, query, criteriaBuilder) ->
-                root.get("author").in(Arrays.stream(params).toList());
+                root.get(AUTHOR_FIELD_PARAMETER).in(Arrays.stream(params).toList());
     }
 
     @Override
     public String getKey() {
-        return "author";
+        return AUTHOR_FIELD_PARAMETER;
     }
 }

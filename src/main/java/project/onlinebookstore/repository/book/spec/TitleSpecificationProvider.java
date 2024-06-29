@@ -8,14 +8,16 @@ import project.onlinebookstore.repository.SpecificationProvider;
 
 @Component
 public class TitleSpecificationProvider implements SpecificationProvider<Book> {
+    private static final String TITLE_FIELD_PARAMETER = "title";
+
     @Override
     public Specification<Book> getSpecification(String[] params) {
-        return (root, query, criteriaBuilder) -> root.get("title")
+        return (root, query, criteriaBuilder) -> root.get(TITLE_FIELD_PARAMETER)
                 .in(Arrays.stream(params).toArray());
     }
 
     @Override
     public String getKey() {
-        return "title";
+        return TITLE_FIELD_PARAMETER;
     }
 }
