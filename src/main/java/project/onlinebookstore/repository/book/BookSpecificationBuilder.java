@@ -13,6 +13,10 @@ import project.onlinebookstore.repository.SpecificationProviderManager;
 @Component
 @RequiredArgsConstructor
 public class BookSpecificationBuilder implements SpecificationBuilder<Book> {
+    private static final String TITLE_KEY = "title";
+    private static final String PRICE_KEY = "price";
+    private static final String ISBN_KEY = "isbn";
+    private static final String AUTHOR_KEY = "author";
 
     private final SpecificationProviderManager<Book> specificationProviderManager;
 
@@ -23,7 +27,7 @@ public class BookSpecificationBuilder implements SpecificationBuilder<Book> {
         if (searchParameters.titles() != null
                 && searchParameters.titles().length > 0) {
             spec = spec.and(specificationProviderManager
-                    .getSpecificationProvider("title")
+                    .getSpecificationProvider(TITLE_KEY)
                     .getSpecification(searchParameters.titles()));
         }
 
@@ -34,21 +38,21 @@ public class BookSpecificationBuilder implements SpecificationBuilder<Book> {
                             .map(BigDecimal::toString)
                             .toArray(String[]::new);
             spec = spec.and(specificationProviderManager
-                    .getSpecificationProvider("price")
+                    .getSpecificationProvider(PRICE_KEY)
                     .getSpecification(bigDecimalPriceToString));
         }
 
-        if (searchParameters.isbnes() != null
-                && searchParameters.isbnes().length > 0) {
+        if (searchParameters.isbns() != null
+                && searchParameters.isbns().length > 0) {
             spec = spec.and(specificationProviderManager
-                    .getSpecificationProvider("isbn")
-                    .getSpecification(searchParameters.isbnes()));
+                    .getSpecificationProvider(ISBN_KEY)
+                    .getSpecification(searchParameters.isbns()));
         }
 
         if (searchParameters.authors() != null
                 && searchParameters.authors().length > 0) {
             spec = spec.and(specificationProviderManager
-                    .getSpecificationProvider("author")
+                    .getSpecificationProvider(AUTHOR_KEY)
                     .getSpecification(searchParameters.authors()));
         }
         return spec;
