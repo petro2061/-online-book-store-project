@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
@@ -18,7 +19,6 @@ public class CustomGlobalExceptionHandler {
     public ResponseEntity<Map<String, Object>> handleValidationExceptions(
             MethodArgumentNotValidException ex) {
         Map<String, Object> body = new LinkedHashMap<>();
-
         List<String> errors = ex.getBindingResult()
                 .getAllErrors().stream()
                 .map(this::getMessageError)
@@ -29,6 +29,27 @@ public class CustomGlobalExceptionHandler {
         body.put("status", HttpStatus.BAD_REQUEST);
         body.put("errors", errors);
         return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(DataProcessingException.class)
+    public ResponseEntity<Map<String, Object>> handleDataProcessingException(
+            DataProcessingException ex) {
+        return new ResponseEntity<>(getBody(ex), HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<Map<String, Object>> handleAllExceptions(Exception ex) {
+        return new ResponseEntity<>(getBody(ex), HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @ExceptionHandler(NullPointerException.class)
+    public ResponseEntity<Map<String, Object>> handleNullPointerExceptions(NullPointerException ex) {
+        return new ResponseEntity<>(getBody(ex), HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @ExceptionHandler(NoSuchElementException.class)
+    public ResponseEntity<Map<String, Object>> NoSuchElementException(NullPointerException ex) {
+        return new ResponseEntity<>(getBody(ex), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     private String getMessageError(ObjectError error) {
@@ -42,5 +63,14 @@ public class CustomGlobalExceptionHandler {
                     + message;
         }
         return error.getDefaultMessage();
+    }
+
+    private Map<String, Object> getBody(Exception exception) {
+        Map<String, Object> body = new LinkedHashMap<>();
+        body.put("timestamp", LocalDateTime.now());
+        body.put("code", HttpStatus.INTERNAL_SERVER_ERROR.value());
+        body.put("status", HttpStatus.INTERNAL_SERVER_ERROR);
+        body.put("error message", exception.getMessage());
+        return body;
     }
 }
