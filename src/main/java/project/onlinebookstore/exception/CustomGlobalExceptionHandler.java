@@ -43,12 +43,14 @@ public class CustomGlobalExceptionHandler {
     }
 
     @ExceptionHandler(NullPointerException.class)
-    public ResponseEntity<Map<String, Object>> handleNullPointerExceptions(NullPointerException ex) {
+    public ResponseEntity<Map<String, Object>> handleNullPointerExceptions(
+            NullPointerException ex) {
         return new ResponseEntity<>(getBody(ex), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @ExceptionHandler(NoSuchElementException.class)
-    public ResponseEntity<Map<String, Object>> NoSuchElementException(NullPointerException ex) {
+    public ResponseEntity<Map<String, Object>> handleNoSuchElementException(
+            NullPointerException ex) {
         return new ResponseEntity<>(getBody(ex), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
