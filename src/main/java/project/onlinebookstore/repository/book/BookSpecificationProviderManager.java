@@ -1,6 +1,7 @@
 package project.onlinebookstore.repository.book;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import project.onlinebookstore.model.Book;
@@ -18,7 +19,7 @@ public class BookSpecificationProviderManager implements SpecificationProviderMa
                 .stream()
                 .filter(provider -> provider.getKey().equals(key))
                 .findFirst()
-                .orElseThrow(() -> new RuntimeException("Can't find correct "
+                .orElseThrow(() -> new NoSuchElementException("Can't find correct "
                         + "specification provider for key: " + key));
     }
 }
