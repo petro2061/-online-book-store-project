@@ -4,12 +4,15 @@ import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import project.onlinebookstore.dto.BookDto;
+import project.onlinebookstore.dto.BookSearchParameters;
 import project.onlinebookstore.dto.CreateBookRequestDto;
 import project.onlinebookstore.mapper.BookMapper;
 import project.onlinebookstore.model.Book;
-import project.onlinebookstore.repository.BookRepository;
+import project.onlinebookstore.repository.book.BookRepository;
+import project.onlinebookstore.repository.book.BookSpecificationBuilder;
 import project.onlinebookstore.service.BookService;
 
 @RequiredArgsConstructor
@@ -17,6 +20,7 @@ import project.onlinebookstore.service.BookService;
 public class BookServiceImpl implements BookService {
     private final BookRepository bookRepository;
     private final BookMapper bookMapper;
+    private final BookSpecificationBuilder bookSpecificationBuilder;
 
     @Override
     public BookDto save(CreateBookRequestDto bookRequestDto) {
@@ -54,4 +58,13 @@ public class BookServiceImpl implements BookService {
         return bookMapper.toBookDto(bookRepository.save(book));
     }
 
+    @Override
+    public List<BookDto> searchBooks(BookSearchParameters searchParameters) {
+        Specification<Book> bookSpecification
+                = bookSpecificationBuilder.build(searchParameters);
+        return bookRepository.findAll(bookSpecification)
+                .stream()
+                .map(bookMapper::toBookDto)
+                .toList();
+    }
 }

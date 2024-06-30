@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import project.onlinebookstore.dto.BookDto;
+import project.onlinebookstore.dto.BookSearchParameters;
 import project.onlinebookstore.dto.CreateBookRequestDto;
 import project.onlinebookstore.service.BookService;
 
@@ -44,8 +45,13 @@ public class BookController {
     }
 
     @PutMapping("/{id}")
-    private BookDto updateBook(@PathVariable Long id,
-                               @RequestBody CreateBookRequestDto updateBookDto) {
+    public BookDto updateBook(@PathVariable Long id,
+                              @RequestBody CreateBookRequestDto updateBookDto) {
         return bookService.updateById(id, updateBookDto);
+    }
+
+    @GetMapping("/search")
+    public List<BookDto> searchBooks(BookSearchParameters searchParameters) {
+        return bookService.searchBooks(searchParameters);
     }
 }
