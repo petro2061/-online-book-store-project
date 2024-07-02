@@ -30,16 +30,10 @@ public class CustomGlobalExceptionHandler {
         return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
     }
 
-    @ExceptionHandler(DataProcessingException.class)
-    public ResponseEntity<Map<String, Object>> handleDataProcessingException(
-            DataProcessingException ex) {
-        return new ResponseEntity<>(getBody(ex), HttpStatus.INTERNAL_SERVER_ERROR);
-    }
-
     @ExceptionHandler(EntityNotFoundException.class)
     public ResponseEntity<Map<String, Object>> handleEntityNotFoundException(
             EntityNotFoundException ex) {
-        return new ResponseEntity<>(getBody(ex), HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ResponseEntity<>(getBody(ex), HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(Exception.class)
