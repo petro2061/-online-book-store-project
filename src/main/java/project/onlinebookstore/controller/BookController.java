@@ -5,9 +5,13 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import java.util.List;
+import jakarta.validation.constraints.Positive;
 import lombok.RequiredArgsConstructor;
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -24,9 +28,10 @@ import project.onlinebookstore.service.BookService;
 
 @Tag(name = "Book Management",
         description = "Contains book entity management operations")
+@Validated
+@RequiredArgsConstructor
 @RestController
 @RequestMapping("/books")
-@RequiredArgsConstructor
 public class BookController {
     private final BookService bookService;
 
@@ -34,9 +39,7 @@ public class BookController {
             description = "Allows get all books using pagination")
     @GetMapping
     public List<BookDto> getAll(
-            @Parameter(description = "Standard object pageable "
-                    + "include page, size and sort")
-            Pageable pageable) {
+            @ParameterObject @PageableDefault Pageable pageable) {
         return bookService.findAll(pageable);
     }
 
@@ -45,7 +48,7 @@ public class BookController {
     @GetMapping("/{id}")
     public BookDto getBookById(
             @Parameter(description = "Represents the book identifier")
-            @PathVariable Long id) {
+            @PathVariable @Positive Long id) {
         return bookService.findById(id);
     }
 
@@ -55,7 +58,7 @@ public class BookController {
     @DeleteMapping("/{id}")
     public void delete(
             @Parameter(description = "Represents the book identifier")
-            @PathVariable Long id) {
+            @PathVariable @Positive Long id) {
         bookService.deleteById(id);
     }
 
@@ -86,7 +89,8 @@ public class BookController {
     public List<BookDto> searchBooks(
             @Parameter(description = "Represents an object whose fields represent"
                     + " an array of search parameters")
-            BookSearchParameters searchParameters) {
-        return bookService.searchBooks(searchParameters);
+            BookSearchParameters searchParameters,
+            @ParameterObject @PageableDefault Pageable pageable) {
+        return bookService.searchBooks(searchParameters, pageable);
     }
 }
