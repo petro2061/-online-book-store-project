@@ -4,7 +4,6 @@ import java.time.LocalDateTime;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.NoSuchElementException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
@@ -31,26 +30,14 @@ public class CustomGlobalExceptionHandler {
         return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
     }
 
-    @ExceptionHandler(DataProcessingException.class)
-    public ResponseEntity<Map<String, Object>> handleDataProcessingException(
-            DataProcessingException ex) {
-        return new ResponseEntity<>(getBody(ex), HttpStatus.INTERNAL_SERVER_ERROR);
+    @ExceptionHandler(EntityNotFoundException.class)
+    public ResponseEntity<Map<String, Object>> handleEntityNotFoundException(
+            EntityNotFoundException ex) {
+        return new ResponseEntity<>(getBody(ex), HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<Map<String, Object>> handleAllExceptions(Exception ex) {
-        return new ResponseEntity<>(getBody(ex), HttpStatus.INTERNAL_SERVER_ERROR);
-    }
-
-    @ExceptionHandler(NullPointerException.class)
-    public ResponseEntity<Map<String, Object>> handleNullPointerExceptions(
-            NullPointerException ex) {
-        return new ResponseEntity<>(getBody(ex), HttpStatus.INTERNAL_SERVER_ERROR);
-    }
-
-    @ExceptionHandler(NoSuchElementException.class)
-    public ResponseEntity<Map<String, Object>> handleNoSuchElementException(
-            NullPointerException ex) {
         return new ResponseEntity<>(getBody(ex), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
