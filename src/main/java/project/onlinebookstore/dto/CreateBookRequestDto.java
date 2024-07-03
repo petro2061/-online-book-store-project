@@ -2,9 +2,8 @@ package project.onlinebookstore.dto;
 
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
-import java.math.BigDecimal;
-
 import jakarta.validation.constraints.NotNull;
+import java.math.BigDecimal;
 import lombok.Data;
 import project.onlinebookstore.validation.Author;
 import project.onlinebookstore.validation.CoverImage;
