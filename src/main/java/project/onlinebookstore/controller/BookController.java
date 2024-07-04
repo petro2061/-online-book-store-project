@@ -77,7 +77,7 @@ public class BookController {
     @PutMapping("/{id}")
     public BookDto updateBookById(
             @Parameter(description = "Represents the book identifier")
-            @PathVariable Long id,
+            @PathVariable @Positive Long id,
             @Parameter(description = "Represents the data for update book in DB")
             @RequestBody @Valid CreateBookRequestDto updateBookDto) {
         return bookService.updateById(id, updateBookDto);
