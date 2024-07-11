@@ -21,10 +21,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-import project.onlinebookstore.dto.BookDto;
-import project.onlinebookstore.dto.BookSearchParameters;
-import project.onlinebookstore.dto.CreateBookRequestDto;
-import project.onlinebookstore.service.BookService;
+import project.onlinebookstore.dto.book.BookDto;
+import project.onlinebookstore.dto.book.BookSearchParameters;
+import project.onlinebookstore.dto.book.CreateBookRequestDto;
+import project.onlinebookstore.service.book.BookService;
 
 @Tag(name = "Book Management",
         description = "Contains book entity management operations")
