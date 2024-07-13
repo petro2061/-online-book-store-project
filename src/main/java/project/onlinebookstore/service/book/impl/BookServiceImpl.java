@@ -1,4 +1,4 @@
-package project.onlinebookstore.service.impl;
+package project.onlinebookstore.service.book.impl;
 
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
@@ -7,14 +7,14 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
-import project.onlinebookstore.dto.BookDto;
-import project.onlinebookstore.dto.BookSearchParameters;
-import project.onlinebookstore.dto.CreateBookRequestDto;
+import project.onlinebookstore.dto.book.BookDto;
+import project.onlinebookstore.dto.book.BookSearchParameters;
+import project.onlinebookstore.dto.book.CreateBookRequestDto;
 import project.onlinebookstore.mapper.BookMapper;
 import project.onlinebookstore.model.Book;
 import project.onlinebookstore.repository.book.BookRepository;
 import project.onlinebookstore.repository.book.BookSpecificationBuilder;
-import project.onlinebookstore.service.BookService;
+import project.onlinebookstore.service.book.BookService;
 
 @RequiredArgsConstructor
 @Service

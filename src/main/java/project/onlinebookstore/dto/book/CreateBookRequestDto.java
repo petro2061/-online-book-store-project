@@ -1,4 +1,4 @@
-package project.onlinebookstore.dto;
+package project.onlinebookstore.dto.book;
 
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;

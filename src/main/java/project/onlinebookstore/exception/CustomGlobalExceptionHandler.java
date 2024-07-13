@@ -33,12 +33,24 @@ public class CustomGlobalExceptionHandler {
     @ExceptionHandler(EntityNotFoundException.class)
     public ResponseEntity<Map<String, Object>> handleEntityNotFoundException(
             EntityNotFoundException ex) {
-        return new ResponseEntity<>(getBody(ex), HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(
+                getBody(ex, HttpStatus.BAD_REQUEST),
+                HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(RegistrationException.class)
+    public ResponseEntity<Map<String, Object>> handlerRegistrationException(
+            RegistrationException ex) {
+        return new ResponseEntity<>(
+                getBody(ex, HttpStatus.CONFLICT),
+                HttpStatus.CONFLICT);
     }
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<Map<String, Object>> handleAllExceptions(Exception ex) {
-        return new ResponseEntity<>(getBody(ex), HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ResponseEntity<>(
+                getBody(ex, HttpStatus.INTERNAL_SERVER_ERROR),
+                HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     private String getMessageError(ObjectError error) {
@@ -54,11 +66,11 @@ public class CustomGlobalExceptionHandler {
         return error.getDefaultMessage();
     }
 
-    private Map<String, Object> getBody(Exception exception) {
+    private Map<String, Object> getBody(Exception exception, HttpStatus status) {
         Map<String, Object> body = new LinkedHashMap<>();
         body.put("timestamp", LocalDateTime.now());
-        body.put("code", HttpStatus.INTERNAL_SERVER_ERROR.value());
-        body.put("status", HttpStatus.INTERNAL_SERVER_ERROR);
+        body.put("code", status.value());
+        body.put("status", status.name());
         body.put("error message", exception.getMessage());
         return body;
     }
