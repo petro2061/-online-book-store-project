@@ -11,7 +11,7 @@ import project.onlinebookstore.validation.Password;
 @FieldMatch(first = "password", second = "repeatPassword")
 public class UserRegistrationRequestDto {
     @Email
-    @NotBlank(message = "Field title can't be null")
+    @NotBlank(message = "Field email can't be null")
     private String email;
     @Length(min = 8, max = 25)
     @Password
