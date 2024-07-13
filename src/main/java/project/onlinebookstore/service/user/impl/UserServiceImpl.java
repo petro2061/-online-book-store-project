@@ -6,7 +6,6 @@ import project.onlinebookstore.dto.user.UserRegistrationRequestDto;
 import project.onlinebookstore.dto.user.UserResponseDto;
 import project.onlinebookstore.exception.RegistrationException;
 import project.onlinebookstore.mapper.UserMapper;
-import project.onlinebookstore.model.User;
 import project.onlinebookstore.repository.user.UserRepository;
 import project.onlinebookstore.service.user.UserService;
 
@@ -19,17 +18,12 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserResponseDto register(UserRegistrationRequestDto registrationRequestDto)
             throws RegistrationException {
-        if (userRepository.findByEmail(registrationRequestDto.getEmail()).isPresent()) {
+        if (userRepository.existsByEmail(registrationRequestDto.getEmail())) {
             throw new RegistrationException("Can't registration user. User with email: "
                     + registrationRequestDto.getEmail()
                     + " already exist");
         }
-        User user = new User();
-        user.setEmail(registrationRequestDto.getEmail());
-        user.setPassword(registrationRequestDto.getPassword());
-        user.setFirstName(registrationRequestDto.getFirstName());
-        user.setLastName(registrationRequestDto.getLastName());
-        user.setShippingAddress(registrationRequestDto.getShippingAddress());
-        return userMapper.toUserDto(userRepository.save(user));
+        return userMapper.toUserDto(userRepository
+                .save(userMapper.toUserModel(registrationRequestDto)));
     }
 }
