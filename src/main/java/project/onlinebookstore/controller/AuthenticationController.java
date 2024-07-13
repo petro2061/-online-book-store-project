@@ -2,7 +2,6 @@ package project.onlinebookstore.controller;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,7 +11,6 @@ import project.onlinebookstore.dto.user.UserResponseDto;
 import project.onlinebookstore.exception.RegistrationException;
 import project.onlinebookstore.service.user.UserService;
 
-@Validated
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/auth")
