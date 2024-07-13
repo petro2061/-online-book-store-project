@@ -42,8 +42,8 @@ public class CustomGlobalExceptionHandler {
     public ResponseEntity<Map<String, Object>> handlerRegistrationException(
             RegistrationException ex) {
         return new ResponseEntity<>(
-                getBody(ex, HttpStatus.NOT_FOUND),
-                HttpStatus.NOT_FOUND);
+                getBody(ex, HttpStatus.CONFLICT),
+                HttpStatus.CONFLICT);
     }
 
     @ExceptionHandler(Exception.class)
