@@ -1,0 +1,23 @@
+databaseChangeLog:
+  - changeSet:
+      id: insert-admin_user-to-users
+      author: petro.feniak
+      changes:
+        - insert:
+            tableName: users
+            columns:
+              - column: { name: email, value: "admin@gmail.com" }
+              - column: { name: password,
+                          value: "$2y$10$pCqsETLdAj6d4QvuhPlbDuX4o5HWu98Y8wLs58bRVJ.e2u4IlUXBG"} # "admin_12345!" hashed with BCrypt
+              - column: { name: first_name, value: "admin"}
+              - column: { name: last_name, value: "admin"}
+              - column: { name: shipping_address, value: "none"}
+        - insert:
+            tableName: users_roles
+            columns:
+              - column:
+                  name: user_id
+                  valueComputed: (SELECT id FROM users WHERE email='admin@gmail.com')
+              - column:
+                  name: role_id
+                  valueComputed: (SELECT id FROM roles WHERE role='ADMIN')
