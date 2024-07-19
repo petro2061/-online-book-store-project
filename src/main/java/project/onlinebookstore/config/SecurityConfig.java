@@ -19,7 +19,6 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableMethodSecurity
 @Configuration
 public class SecurityConfig {
-
     private final UserDetailsService userDetailsService;
 
     @Bean
