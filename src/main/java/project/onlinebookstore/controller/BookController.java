@@ -47,7 +47,7 @@ public class BookController {
 
     @Operation(summary = "Get book by Id",
             description = "Allows get a book by Id")
-    @PreAuthorize("hashRole('ROLE_USER')")
+    @PreAuthorize("hashRole('USER')")
     @GetMapping("/{id}")
     public BookDto getBookById(
             @Parameter(description = "Represents the book identifier")
@@ -58,7 +58,7 @@ public class BookController {
     @Operation(summary = "Delete book by Id",
             description = "Allows delete a book by Id")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{id}")
     public void delete(
             @Parameter(description = "Represents the book identifier")
@@ -68,7 +68,7 @@ public class BookController {
 
     @Operation(summary = "Create new book",
             description = "creates a new entity based on the input data")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping
     public BookDto createBook(
             @Parameter(description =
@@ -79,7 +79,7 @@ public class BookController {
 
     @Operation(summary = "Update book by Id",
             description = "Allows update book by identifier")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/{id}")
     public BookDto updateBookById(
             @Parameter(description = "Represents the book identifier")
@@ -91,7 +91,7 @@ public class BookController {
 
     @Operation(summary = "Search book by parameters",
             description = "Allows searching for books by certain parameters")
-    @PreAuthorize("hashRole('ROLE_USER')")
+    @PreAuthorize("hashRole('USER')")
     @GetMapping("/search")
     public List<BookDto> searchBooks(
             @Parameter(description = "Represents an object whose fields represent"
