@@ -31,8 +31,7 @@ public class UserServiceImpl implements UserService {
                     + registrationRequestDto.getEmail()
                     + " already exist");
         }
-        Role userRole
-                = roleRepository
+        Role userRole = roleRepository
                 .findByRole(Role.RoleName.ROLE_USER)
                 .orElseThrow(() ->
                         new EntityNotFoundException("Can't find role: "
