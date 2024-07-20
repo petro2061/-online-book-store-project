@@ -1,6 +1,7 @@
 package project.onlinebookstore.service.user.impl;
 
 import jakarta.persistence.EntityNotFoundException;
+import java.util.Set;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -34,10 +35,11 @@ public class UserServiceImpl implements UserService {
                 = roleRepository
                 .findByRole(Role.RoleName.ROLE_USER)
                 .orElseThrow(() ->
-                        new EntityNotFoundException("Can't find role: USER"));
+                        new EntityNotFoundException("Can't find role: "
+                                + Role.RoleName.ROLE_USER));
         User user = userMapper.toUserModel(registrationRequestDto);
         user.setPassword(passwordEncoder.encode(registrationRequestDto.getPassword()));
-        user.getRoles().add(userRole);
+        user.setRoles(Set.of(userRole));
         return userMapper.toUserDto(userRepository.save(user));
     }
 }
