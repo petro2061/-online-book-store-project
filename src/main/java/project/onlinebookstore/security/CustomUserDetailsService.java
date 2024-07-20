@@ -13,9 +13,7 @@ public class CustomUserDetailsService implements UserDetailsService {
     private final UserRepository userRepository;
 
     @Override
-    public UserDetails loadUserByUsername(String email)
-            throws EntityNotFoundException {
-
+    public UserDetails loadUserByUsername(String email) {
         return userRepository.findByEmailWithRole(email).orElseThrow(
                 () -> new EntityNotFoundException("Can't find user with email: "
                         + email)
