@@ -38,7 +38,7 @@ public class BookController {
 
     @Operation(summary = "Get all books",
             description = "Allows get all books using pagination")
-    @PreAuthorize("hasRole('ROLE_USER')")
+    @PreAuthorize("hasRole('USER')")
     @GetMapping
     public List<BookDto> getAll(
             @ParameterObject @PageableDefault Pageable pageable) {
@@ -47,7 +47,7 @@ public class BookController {
 
     @Operation(summary = "Get book by Id",
             description = "Allows get a book by Id")
-    @PreAuthorize("hashRole('USER')")
+    @PreAuthorize("hasRole('USER')")
     @GetMapping("/{id}")
     public BookDto getBookById(
             @Parameter(description = "Represents the book identifier")
@@ -91,7 +91,7 @@ public class BookController {
 
     @Operation(summary = "Search book by parameters",
             description = "Allows searching for books by certain parameters")
-    @PreAuthorize("hashRole('USER')")
+    @PreAuthorize("hasRole('USER')")
     @GetMapping("/search")
     public List<BookDto> searchBooks(
             @Parameter(description = "Represents an object whose fields represent"
