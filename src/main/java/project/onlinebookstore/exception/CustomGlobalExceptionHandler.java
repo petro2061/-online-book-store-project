@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import io.jsonwebtoken.JwtException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
@@ -53,6 +54,22 @@ public class CustomGlobalExceptionHandler {
         return new ResponseEntity<>(
                 getBody(ex, HttpStatus.FORBIDDEN),
                 HttpStatus.FORBIDDEN);
+    }
+
+    @ExceptionHandler(JwtException.class)
+    public ResponseEntity<Map<String, Object>> handleJwtException(
+            JwtException ex) {
+        return new ResponseEntity<>(
+                getBody(ex, HttpStatus.UNAUTHORIZED),
+                HttpStatus.UNAUTHORIZED);
+    }
+
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<Map<String, Object>> handleIllegalArgumentException(
+            IllegalArgumentException ex) {
+        return new ResponseEntity<>(
+                getBody(ex, HttpStatus.BAD_REQUEST),
+                HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(Exception.class)
