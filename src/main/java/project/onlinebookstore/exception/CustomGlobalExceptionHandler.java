@@ -1,6 +1,5 @@
 package project.onlinebookstore.exception;
 
-import io.jsonwebtoken.JwtException;
 import java.time.LocalDateTime;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -54,22 +53,6 @@ public class CustomGlobalExceptionHandler {
         return new ResponseEntity<>(
                 getBody(ex, HttpStatus.FORBIDDEN),
                 HttpStatus.FORBIDDEN);
-    }
-
-    @ExceptionHandler(JwtException.class)
-    public ResponseEntity<Map<String, Object>> handleJwtException(
-            JwtException ex) {
-        return new ResponseEntity<>(
-                getBody(ex, HttpStatus.UNAUTHORIZED),
-                HttpStatus.UNAUTHORIZED);
-    }
-
-    @ExceptionHandler(IllegalArgumentException.class)
-    public ResponseEntity<Map<String, Object>> handleIllegalArgumentException(
-            IllegalArgumentException ex) {
-        return new ResponseEntity<>(
-                getBody(ex, HttpStatus.BAD_REQUEST),
-                HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(Exception.class)
