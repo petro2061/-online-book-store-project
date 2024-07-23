@@ -20,7 +20,7 @@ public class OpenApiConfig {
                         .title("Online Book Store API")
                         .version("1.0.0")
                         .description("API for management online book store"))
-                .components(new Components().addSecuritySchemes("BearerAuth",
+                .components(new Components().addSecuritySchemes(SECURITY_SCHEMA_NAME,
                         new SecurityScheme()
                                 .type(SecurityScheme.Type.HTTP)
                                 .scheme(SCHEMA_TYPE_AND_FORMAT)
