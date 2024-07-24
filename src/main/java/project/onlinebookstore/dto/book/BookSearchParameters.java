@@ -7,5 +7,6 @@ public record BookSearchParameters(
         String[] authors,
         String[] isbns,
         BigDecimal[] prices,
-        Long[] categories) {
+        Long[] categories
+) {
 }
