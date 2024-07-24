@@ -63,7 +63,6 @@ public class BookSpecificationBuilder implements SpecificationBuilder<Book> {
                     Arrays.stream(searchParameters.categories())
                             .map(String::valueOf)
                             .toArray(String[]::new);
-
             spec = spec.and(specificationProviderManager
                     .getSpecificationProvider(CATEGORIES_KEY)
                     .getSpecification(categoriesIdLongToString));
