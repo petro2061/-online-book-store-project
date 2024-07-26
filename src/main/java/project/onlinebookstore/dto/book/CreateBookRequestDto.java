@@ -2,6 +2,7 @@ package project.onlinebookstore.dto.book;
 
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.util.List;
@@ -24,7 +25,7 @@ public class CreateBookRequestDto {
     private String description;
     @CoverImage
     private String coverImage;
-    @NotNull(message = "Can be empty but not null")
+    @NotEmpty(message = "Can be empty but not null")
     private List<Long> categoriesIds;
 }
 
