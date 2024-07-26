@@ -17,6 +17,7 @@ public class BookSpecificationBuilder implements SpecificationBuilder<Book> {
     private static final String PRICE_KEY = "price";
     private static final String ISBN_KEY = "isbn";
     private static final String AUTHOR_KEY = "author";
+    private static final String CATEGORIES_KEY = "categories";
 
     private final SpecificationProviderManager<Book> specificationProviderManager;
 
@@ -54,6 +55,17 @@ public class BookSpecificationBuilder implements SpecificationBuilder<Book> {
             spec = spec.and(specificationProviderManager
                     .getSpecificationProvider(AUTHOR_KEY)
                     .getSpecification(searchParameters.authors()));
+        }
+
+        if (searchParameters.categories() != null
+                && searchParameters.categories().length > 0) {
+            String[] categoriesIdLongToString =
+                    Arrays.stream(searchParameters.categories())
+                            .map(String::valueOf)
+                            .toArray(String[]::new);
+            spec = spec.and(specificationProviderManager
+                    .getSpecificationProvider(CATEGORIES_KEY)
+                    .getSpecification(categoriesIdLongToString));
         }
         return spec;
     }

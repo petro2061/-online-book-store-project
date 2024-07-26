@@ -1,0 +1,32 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-books-categories-table
+      author: petro.feniak
+      changes:
+        - createTable:
+            tableName: books_categories
+            columns:
+              - column:
+                  name: book_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+              - column:
+                  name: category_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+        - addForeignKeyConstraint:
+            baseColumnNames: book_id
+            baseTableName: books_categories
+            constraintName: fk_users_roles_book
+            referencedColumnNames: id
+            referencedTableName: books
+            onDelete: CASCADE
+        - addForeignKeyConstraint:
+            baseColumnNames: category_id
+            baseTableName: books_categories
+            constraintName: fk_users_roles_category
+            referencedColumnNames: id
+            referencedTableName: categories
+            onDelete: CASCADE
