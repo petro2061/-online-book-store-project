@@ -1,6 +1,7 @@
 package project.onlinebookstore.service.user.impl;
 
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import java.util.Set;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -10,8 +11,10 @@ import project.onlinebookstore.dto.user.UserResponseDto;
 import project.onlinebookstore.exception.RegistrationException;
 import project.onlinebookstore.mapper.UserMapper;
 import project.onlinebookstore.model.Role;
+import project.onlinebookstore.model.ShoppingCart;
 import project.onlinebookstore.model.User;
 import project.onlinebookstore.repository.role.RoleRepository;
+import project.onlinebookstore.repository.shoppingcart.ShoppingCartRepository;
 import project.onlinebookstore.repository.user.UserRepository;
 import project.onlinebookstore.service.user.UserService;
 
@@ -22,8 +25,10 @@ public class UserServiceImpl implements UserService {
     private final UserMapper userMapper;
     private final PasswordEncoder passwordEncoder;
     private final RoleRepository roleRepository;
+    private final ShoppingCartRepository shoppingCartRepository;
 
     @Override
+    @Transactional
     public UserResponseDto register(UserRegistrationRequestDto registrationRequestDto)
             throws RegistrationException {
         if (userRepository.existsByEmail(registrationRequestDto.getEmail())) {
@@ -39,6 +44,13 @@ public class UserServiceImpl implements UserService {
         User user = userMapper.toUserModel(registrationRequestDto);
         user.setPassword(passwordEncoder.encode(registrationRequestDto.getPassword()));
         user.setRoles(Set.of(userRole));
-        return userMapper.toUserDto(userRepository.save(user));
+
+        User savedUser = userRepository.save(user);
+
+        ShoppingCart shoppingCart = new ShoppingCart();
+        shoppingCart.setUser(savedUser);
+        shoppingCartRepository.save(shoppingCart);
+
+        return userMapper.toUserDto(savedUser);
     }
 }
