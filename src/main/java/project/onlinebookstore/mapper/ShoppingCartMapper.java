@@ -9,5 +9,6 @@ import project.onlinebookstore.model.ShoppingCart;
 @Mapper(config = MapperConfig.class)
 public interface ShoppingCartMapper {
     @Mapping(target = "userId", source = "user.id")
+    @Mapping(target = "cartItems", ignore = true)
     ShoppingCartDto toDto(ShoppingCart shoppingCart);
 }
