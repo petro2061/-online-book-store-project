@@ -6,7 +6,7 @@ import jakarta.validation.constraints.NotNull;
 public record CreateCartItemRequestDto(
         @NotNull (message = "Field bookId can't be null")
         Long bookId,
-        @Min(1)
+        @Min(value = 1, message = "Quantity can't be less one")
         int quantity
 ) {
 }
