@@ -1,21 +1,23 @@
 package project.onlinebookstore.service.shopingcart;
 
-import project.onlinebookstore.dto.cartitem.CartItemDto;
 import project.onlinebookstore.dto.cartitem.CreateCartItemRequestDto;
 import project.onlinebookstore.dto.cartitem.CreateCartItemUpdateRequestDto;
 import project.onlinebookstore.dto.shoppingcart.ShoppingCartDto;
+import project.onlinebookstore.model.User;
 
 public interface ShoppingCartService {
     ShoppingCartDto getShoppingCart(Long userId);
 
-    CartItemDto addCartItemToShoppingCart(
+    ShoppingCartDto addCartItemToShoppingCart(
             Long userId,
             CreateCartItemRequestDto cartItemRequestDto);
 
-    CartItemDto updateCartItemInShoppingCart(
+    ShoppingCartDto updateCartItemInShoppingCart(
             Long userId,
             Long cartItemId,
             CreateCartItemUpdateRequestDto updateRequestDto);
 
-    CartItemDto removeCartItemFromShoppingCart(Long userId, Long cartItemId);
+    void removeCartItemFromShoppingCart(Long userId, Long cartItemId);
+
+    void createShoppingCart(User user);
 }
