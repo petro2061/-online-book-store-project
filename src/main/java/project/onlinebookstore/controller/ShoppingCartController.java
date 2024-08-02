@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-import project.onlinebookstore.dto.cartitem.CartItemDto;
 import project.onlinebookstore.dto.cartitem.CreateCartItemRequestDto;
 import project.onlinebookstore.dto.cartitem.CreateCartItemUpdateRequestDto;
 import project.onlinebookstore.dto.shoppingcart.ShoppingCartDto;
@@ -48,7 +47,7 @@ public class ShoppingCartController {
             description = "Allows get all new cart item to shopping cart")
     @PreAuthorize("hasRole('USER')")
     @PostMapping
-    public CartItemDto addCartItemToShoppingCart(
+    public ShoppingCartDto addCartItemToShoppingCart(
             Authentication authentication,
             @Parameter(description = "Represents the product data to be added to the cart")
             @RequestBody @Valid
@@ -61,7 +60,7 @@ public class ShoppingCartController {
     @Operation(summary = "Update product in shopping cart",
             description = "Allows update product in the shopping cart by identifier")
     @PutMapping("/items/{cartItemId}")
-    public CartItemDto updateCartItemInShoppingCart(
+    public ShoppingCartDto updateCartItemInShoppingCart(
             Authentication authentication,
             @Parameter(description = "Represents the cart item identifier")
             @PathVariable @Positive Long cartItemId,
@@ -77,13 +76,13 @@ public class ShoppingCartController {
             description = "Allows delete product in the shopping cart by identifier")
     @DeleteMapping("/items/{cartItemId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public CartItemDto removeCartItemFromShoppingCart(
+    public void removeCartItemFromShoppingCart(
             Authentication authentication,
             @Parameter(description = "Represents the cart item identifier")
             @PathVariable @Positive Long cartItemId
     ) {
         User user = (User) authentication.getPrincipal();
-        return shoppingCartService
+        shoppingCartService
                 .removeCartItemFromShoppingCart(user.getId(), cartItemId);
     }
 }
