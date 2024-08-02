@@ -1,9 +1,9 @@
 package project.onlinebookstore.dto.cartitem;
 
-import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.Positive;
 
 public record CreateCartItemUpdateRequestDto(
-        @Min(value = 1, message = "Quantity can't be less one")
+        @Positive(message = "Quantity can't be less one")
         int quantity
 ) {
 }
