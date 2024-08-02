@@ -11,11 +11,10 @@ import project.onlinebookstore.dto.user.UserResponseDto;
 import project.onlinebookstore.exception.RegistrationException;
 import project.onlinebookstore.mapper.UserMapper;
 import project.onlinebookstore.model.Role;
-import project.onlinebookstore.model.ShoppingCart;
 import project.onlinebookstore.model.User;
 import project.onlinebookstore.repository.role.RoleRepository;
-import project.onlinebookstore.repository.shoppingcart.ShoppingCartRepository;
 import project.onlinebookstore.repository.user.UserRepository;
+import project.onlinebookstore.service.shopingcart.ShoppingCartService;
 import project.onlinebookstore.service.user.UserService;
 
 @Service
@@ -25,7 +24,7 @@ public class UserServiceImpl implements UserService {
     private final UserMapper userMapper;
     private final PasswordEncoder passwordEncoder;
     private final RoleRepository roleRepository;
-    private final ShoppingCartRepository shoppingCartRepository;
+    private final ShoppingCartService shoppingCartService;
 
     @Override
     @Transactional
@@ -45,12 +44,9 @@ public class UserServiceImpl implements UserService {
         user.setPassword(passwordEncoder.encode(registrationRequestDto.getPassword()));
         user.setRoles(Set.of(userRole));
 
-        User savedUser = userRepository.save(user);
+        userRepository.save(user);
+        shoppingCartService.createShoppingCart(user);
 
-        ShoppingCart shoppingCart = new ShoppingCart();
-        shoppingCart.setUser(savedUser);
-        shoppingCartRepository.save(shoppingCart);
-
-        return userMapper.toUserDto(savedUser);
+        return userMapper.toUserDto(user);
     }
 }
