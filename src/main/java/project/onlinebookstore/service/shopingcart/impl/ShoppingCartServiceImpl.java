@@ -98,6 +98,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         cartItemRepository.delete(cartItem);
     }
 
+    @Override
     public void createShoppingCart(User user) {
         ShoppingCart shoppingCart = new ShoppingCart();
         shoppingCart.setUser(user);
