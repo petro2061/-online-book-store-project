@@ -21,8 +21,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 @Setter
 @Getter
-@SQLDelete(sql = "UPDATE users SET is_deleted = true WHERE id =?")
-@SQLRestriction(value = "is_deleted = false")
+@SQLDelete(sql = "UPDATE users SET is_deleted = TRUE WHERE id =?")
+@SQLRestriction(value = "is_deleted = FALSE")
 @Entity
 @Table(name = "users")
 public class User implements UserDetails {
