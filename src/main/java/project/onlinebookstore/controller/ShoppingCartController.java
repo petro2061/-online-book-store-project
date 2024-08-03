@@ -39,8 +39,8 @@ public class ShoppingCartController {
     @PreAuthorize("hasRole('USER')")
     @GetMapping
     public ShoppingCartDto getShoppingCart(Authentication authentication) {
-        User user = (User) authentication.getPrincipal();
-        return shoppingCartService.getShoppingCart(user.getId());
+        return shoppingCartService
+                .getShoppingCart(getAuthenticationUser(authentication).getId());
     }
 
     @Operation(summary = "Add new product to shopping cart",
@@ -52,9 +52,10 @@ public class ShoppingCartController {
             @Parameter(description = "Represents the product data to be added to the cart")
             @RequestBody @Valid
             CreateCartItemRequestDto cartItemRequestDto) {
-        User user = (User) authentication.getPrincipal();
         return shoppingCartService
-                .addCartItemToShoppingCart(user.getId(), cartItemRequestDto);
+                .addCartItemToShoppingCart(
+                        getAuthenticationUser(authentication).getId(),
+                        cartItemRequestDto);
     }
 
     @Operation(summary = "Update product in shopping cart",
@@ -67,9 +68,11 @@ public class ShoppingCartController {
             @Parameter(description = "Represents the data for update product")
             @RequestBody @Valid
             CreateCartItemUpdateRequestDto updateRequestDto) {
-        User user = (User) authentication.getPrincipal();
         return shoppingCartService
-                .updateCartItemInShoppingCart(user.getId(), cartItemId, updateRequestDto);
+                .updateCartItemInShoppingCart(
+                        getAuthenticationUser(authentication).getId(),
+                        cartItemId,
+                        updateRequestDto);
     }
 
     @Operation(summary = "Delete product in shopping cart",
@@ -81,8 +84,13 @@ public class ShoppingCartController {
             @Parameter(description = "Represents the cart item identifier")
             @PathVariable @Positive Long cartItemId
     ) {
-        User user = (User) authentication.getPrincipal();
         shoppingCartService
-                .removeCartItemFromShoppingCart(user.getId(), cartItemId);
+                .removeCartItemFromShoppingCart(
+                        getAuthenticationUser(authentication).getId(),
+                        cartItemId);
+    }
+
+    private User getAuthenticationUser(Authentication authentication) {
+        return (User) authentication.getPrincipal();
     }
 }
