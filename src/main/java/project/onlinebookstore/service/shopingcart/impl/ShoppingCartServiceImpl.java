@@ -40,6 +40,11 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
             CreateCartItemRequestDto cartItemRequestDto) {
         ShoppingCart shoppingCart = getShoppingCartForUser(userId);
 
+        Book book = bookRepository.findById(cartItemRequestDto.bookId())
+                .orElseThrow(() -> new EntityNotFoundException("Book with Id: "
+                        + cartItemRequestDto.bookId()
+                        + " not found"));
+
         cartItemRepository.findByShoppingCartIdAndBookId(shoppingCart.getId(),
                         cartItemRequestDto.bookId())
                 .ifPresent(existingCartItem -> {
@@ -47,11 +52,6 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
                             + cartItemRequestDto.bookId()
                             + " already exists in the shopping cart");
                 });
-
-        Book book = bookRepository.findById(cartItemRequestDto.bookId())
-                .orElseThrow(() -> new EntityNotFoundException("Book with Id: "
-                        + cartItemRequestDto.bookId()
-                        + " not found"));
 
         CartItem cartItems = cartItemMapper.toModel(cartItemRequestDto);
         cartItems.setBook(book);
