@@ -40,7 +40,7 @@ public class ShoppingCartController {
     @GetMapping
     public ShoppingCartDto getShoppingCart(Authentication authentication) {
         return shoppingCartService
-                .getShoppingCart(getAuthenticationUser(authentication).getId());
+                .getShoppingCart(getAuthenticationUserByUserId(authentication));
     }
 
     @Operation(summary = "Add new product to shopping cart",
@@ -54,7 +54,7 @@ public class ShoppingCartController {
             CreateCartItemRequestDto cartItemRequestDto) {
         return shoppingCartService
                 .addCartItemToShoppingCart(
-                        getAuthenticationUser(authentication).getId(),
+                        getAuthenticationUserByUserId(authentication),
                         cartItemRequestDto);
     }
 
@@ -70,7 +70,7 @@ public class ShoppingCartController {
             CreateCartItemUpdateRequestDto updateRequestDto) {
         return shoppingCartService
                 .updateCartItemInShoppingCart(
-                        getAuthenticationUser(authentication).getId(),
+                        getAuthenticationUserByUserId(authentication),
                         cartItemId,
                         updateRequestDto);
     }
@@ -86,11 +86,11 @@ public class ShoppingCartController {
     ) {
         shoppingCartService
                 .removeCartItemFromShoppingCart(
-                        getAuthenticationUser(authentication).getId(),
+                        getAuthenticationUserByUserId(authentication),
                         cartItemId);
     }
 
-    private User getAuthenticationUser(Authentication authentication) {
-        return (User) authentication.getPrincipal();
+    private Long getAuthenticationUserByUserId(Authentication authentication) {
+        return ((User) authentication.getPrincipal()).getId();
     }
 }
