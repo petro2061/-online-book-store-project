@@ -1,6 +1,7 @@
 package project.onlinebookstore.mapper;
 
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 import project.onlinebookstore.config.MapperConfig;
 import project.onlinebookstore.dto.category.CategoryDto;
@@ -11,8 +12,12 @@ import project.onlinebookstore.model.Category;
 public interface CategoryMapper {
     CategoryDto toCategoryDto(Category category);
 
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "deleted", ignore = true)
     Category toCategoryModel(CreateCategoryRequestDto categoryRequestDto);
 
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "deleted", ignore = true)
     void updateCategoryFromDto(CreateCategoryRequestDto category,
                                @MappingTarget Category entity);
 }

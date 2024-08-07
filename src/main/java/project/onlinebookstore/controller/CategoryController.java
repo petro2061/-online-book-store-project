@@ -39,7 +39,7 @@ public class CategoryController {
     private final BookService bookService;
 
     @Operation(summary = "Create new category",
-            description = "creates a new entity based on the input data")
+            description = "Creates a new entity based on the input data")
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping
     public CategoryDto createCategory(
