@@ -1,10 +1,10 @@
 package project.onlinebookstore.dto.order;
 
+import jakarta.validation.constraints.NotNull;
 import project.onlinebookstore.model.Order;
-import project.onlinebookstore.validation.ValidEnum;
 
+@NotNull(message = "Status cannot be null")
 public record CreateOrderUpdateRequestDto(
-        @ValidEnum(enumClass = Order.Status.class, message = "Input incorrect order status")
         Order.Status status
 ) {
 }
