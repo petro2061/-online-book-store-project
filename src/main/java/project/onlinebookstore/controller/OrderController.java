@@ -43,10 +43,10 @@ public class OrderController {
     @PostMapping
     public OrderDto createOrder(
             Authentication authentication,
-            @Parameter(description = "Represents the customer's shipping address")
+            @Parameter(description = "Represents data for create new order")
             @RequestBody @Valid CreateOrderRequestDto createOrderRequestDto) {
         return orderService.createOrder(
-                getAuthenticationUserByUserId(authentication),
+                getIdForAuthenticationUser(authentication),
                 createOrderRequestDto);
     }
 
@@ -57,8 +57,8 @@ public class OrderController {
     public List<OrderDto> getAllOrders(
             Authentication authentication,
             @ParameterObject @PageableDefault Pageable pageable) {
-        return orderService.getAllOrder(
-                getAuthenticationUserByUserId(authentication),
+        return orderService.getAllOrders(
+                getIdForAuthenticationUser(authentication),
                 pageable
         );
     }
@@ -87,7 +87,7 @@ public class OrderController {
             @Parameter(description = "Represents the order identifier")
             @PathVariable @Positive Long orderId) {
         return orderService.getAllOrderItemsByOrderId(
-                getAuthenticationUserByUserId(authentication),
+                getIdForAuthenticationUser(authentication),
                 orderId
         );
     }
@@ -103,13 +103,13 @@ public class OrderController {
             @Parameter(description = "Represents the order item identifier")
             @PathVariable @Positive Long orderItemId) {
         return orderService.getOrderItemByOrderIdAndOrderItemId(
-                getAuthenticationUserByUserId(authentication),
+                getIdForAuthenticationUser(authentication),
                 orderId,
                 orderItemId
         );
     }
 
-    private Long getAuthenticationUserByUserId(Authentication authentication) {
+    private Long getIdForAuthenticationUser(Authentication authentication) {
         return ((User) authentication.getPrincipal()).getId();
     }
 }
