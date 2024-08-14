@@ -44,19 +44,19 @@ public class OrderServiceImpl implements OrderService {
         Order order = orderMapper.toModel(shoppingCart, orderRequestDto);
         order.getOrderItems().forEach(orderItem -> orderItem.setOrder(order));
 
-        Order savedOrder = orderRepository.save(order);
+        orderRepository.save(order);
 
         shoppingCart.getCartItems().clear();
         shoppingCartRepository.save(shoppingCart);
 
-        return orderMapper.toDto(savedOrder);
+        return orderMapper.toDto(order);
     }
 
     @Override
-    public List<OrderDto> getAllOrder(Long userId, Pageable pageable) {
-        List<Order> byUserIdWithItems
-                = orderRepository.findByUserIdWithItems(userId, pageable);
-        return byUserIdWithItems.stream()
+    public List<OrderDto> getAllOrders(Long userId, Pageable pageable) {
+        List<Order> byUserId
+                = orderRepository.findByUserId(userId, pageable);
+        return byUserId.stream()
                 .map(orderMapper::toDto)
                 .toList();
     }

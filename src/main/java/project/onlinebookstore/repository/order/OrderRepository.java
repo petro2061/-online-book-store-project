@@ -11,7 +11,7 @@ import project.onlinebookstore.model.Order;
 @Repository
 public interface OrderRepository extends JpaRepository<Order, Long> {
     @Query("SELECT o FROM Order o LEFT JOIN FETCH o.orderItems WHERE o.user.id = :userId")
-    List<Order> findByUserIdWithItems(Long userId, Pageable pageable);
+    List<Order> findByUserId(Long userId, Pageable pageable);
 
     @Query("SELECT o FROM Order o LEFT JOIN FETCH o.orderItems "
             + "WHERE o.id = :orderId")
