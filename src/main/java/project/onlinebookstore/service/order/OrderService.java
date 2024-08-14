@@ -10,7 +10,7 @@ import project.onlinebookstore.dto.orderitem.OrderItemDto;
 public interface OrderService {
     OrderDto createOrder(Long userId, CreateOrderRequestDto orderRequestDto);
 
-    List<OrderDto> getAllOrder(Long userId, Pageable pageable);
+    List<OrderDto> getAllOrders(Long userId, Pageable pageable);
 
     OrderDto updateOrderStatus(
             Long orderId,
