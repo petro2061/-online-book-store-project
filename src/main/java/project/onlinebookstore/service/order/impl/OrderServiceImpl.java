@@ -33,7 +33,6 @@ public class OrderServiceImpl implements OrderService {
     @Override
     @Transactional
     public OrderDto createOrder(Long userId, CreateOrderRequestDto orderRequestDto) {
-
         ShoppingCart shoppingCart = shoppingCartRepository.findByUserId(userId).orElseThrow(
                 () -> new EntityNotFoundException("Can't find user by Id: " + userId));
 
@@ -54,9 +53,9 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public List<OrderDto> getAllOrders(Long userId, Pageable pageable) {
-        List<Order> byUserId
+        List<Order> orders
                 = orderRepository.findByUserId(userId, pageable);
-        return byUserId.stream()
+        return orders.stream()
                 .map(orderMapper::toDto)
                 .toList();
     }
