@@ -1,5 +1,5 @@
 # Builder stage
-FROM openjdk:22-slim as builder
+FROM openjdk:22-slim AS builder
 WORKDIR book-store-application
 ARG JAVA_FILE=target/*.jar
 COPY ${JAVA_FILE} book-store-app.jar
