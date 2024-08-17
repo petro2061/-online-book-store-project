@@ -60,6 +60,7 @@ public class ShoppingCartController {
 
     @Operation(summary = "Update product in shopping cart",
             description = "Allows update product in the shopping cart by identifier")
+    @PreAuthorize("hasRole('USER')")
     @PutMapping("/items/{cartItemId}")
     public ShoppingCartDto updateCartItemInShoppingCart(
             Authentication authentication,
@@ -77,6 +78,7 @@ public class ShoppingCartController {
 
     @Operation(summary = "Delete product in shopping cart",
             description = "Allows delete product in the shopping cart by identifier")
+    @PreAuthorize("hasRole('USER')")
     @DeleteMapping("/items/{cartItemId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void removeCartItemFromShoppingCart(
