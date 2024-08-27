@@ -1,12 +1,12 @@
 package project.onlinebookstore.service.shopingcart.impl;
 
-import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import project.onlinebookstore.dto.cartitem.CreateCartItemRequestDto;
 import project.onlinebookstore.dto.cartitem.CreateCartItemUpdateRequestDto;
 import project.onlinebookstore.dto.shoppingcart.ShoppingCartDto;
+import project.onlinebookstore.exception.EntityNotFoundException;
 import project.onlinebookstore.mapper.CartItemMapper;
 import project.onlinebookstore.mapper.ShoppingCartMapper;
 import project.onlinebookstore.model.Book;
