@@ -126,6 +126,7 @@ class BookServiceImplTest {
 
         Mockito.verify(bookRepository).findById(notValidBookId);
         Mockito.verify(bookMapper, Mockito.never()).toBookDto(ArgumentMatchers.any());
+        Mockito.verifyNoMoreInteractions(bookRepository, bookMapper);
     }
 
     @Test
@@ -138,6 +139,7 @@ class BookServiceImplTest {
         bookServiceImpl.deleteById(deleteBookId);
 
         Mockito.verify(bookRepository).deleteById(deleteBookId);
+        Mockito.verifyNoMoreInteractions(bookRepository);
     }
 
     @Test
@@ -163,6 +165,7 @@ class BookServiceImplTest {
         Mockito.verify(bookMapper).updateBookFromDto(bookRequestDto, book);
         Mockito.verify(bookRepository).save(book);
         Mockito.verify(bookMapper).toBookDto(updateBook);
+        Mockito.verifyNoMoreInteractions(bookRepository, bookMapper);
     }
 
     @Test
@@ -182,6 +185,7 @@ class BookServiceImplTest {
         Mockito.verify(bookRepository).findById(notValidUpdateBookId);
         Mockito.verify(bookMapper, Mockito.never())
                 .updateBookFromDto(ArgumentMatchers.any(), ArgumentMatchers.any());
+        Mockito.verifyNoMoreInteractions(bookRepository, bookMapper);
     }
 
     @Test
@@ -213,6 +217,11 @@ class BookServiceImplTest {
 
         //Then
         Assertions.assertEquals(bookDtoList, actualBookDtoList);
+
+        Mockito.verify(bookRepository).findAll(specification, pageable);
+        Mockito.verify(bookMapper, Mockito.times(bookList.size()))
+                .toBookDto(ArgumentMatchers.any(Book.class));
+        Mockito.verifyNoMoreInteractions(bookRepository, bookMapper);
     }
 
     @Test
@@ -235,6 +244,11 @@ class BookServiceImplTest {
 
         //Then
         Assertions.assertEquals(bookDtoWithoutCategoryIdsList, actualAllBookListByCategoryId);
+
+        Mockito.verify(bookRepository).findAllByCategoryId(categoryId, pageable);
+        Mockito.verify(bookMapper, Mockito.times(bookList.size()))
+                .toDtoWithoutCategories(ArgumentMatchers.any(Book.class));
+        Mockito.verifyNoMoreInteractions(bookRepository, bookMapper);
     }
 
     private CreateBookRequestDto getCreateBookRequestDto() {
