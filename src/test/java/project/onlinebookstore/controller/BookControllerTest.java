@@ -1,6 +1,7 @@
 package project.onlinebookstore.controller;
 
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -8,6 +9,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.Arrays;
 import java.util.List;
 import javax.sql.DataSource;
 import lombok.SneakyThrows;
@@ -29,7 +31,6 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import project.onlinebookstore.dto.book.BookDto;
 import project.onlinebookstore.dto.book.CreateBookRequestDto;
-import project.onlinebookstore.model.Book;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class BookControllerTest {
@@ -90,8 +91,8 @@ class BookControllerTest {
     @DisplayName("Test book creation")
     void createBook() throws Exception {
         // Given
-        CreateBookRequestDto bookRequestDto = getCreateBookRequestDto();
-        BookDto expectedBookDto = getBookDto(getBook(bookRequestDto));
+        CreateBookRequestDto bookRequestDto = getBookRequestDto();
+        BookDto expectedBookDto = getBookDtoFromRequestDto(bookRequestDto);
         String jsonRequest = objectMapper.writeValueAsString(bookRequestDto);
 
         // When
@@ -109,37 +110,83 @@ class BookControllerTest {
         Assertions.assertTrue(EqualsBuilder.reflectionEquals(expectedBookDto, actualBookDto, "id"));
     }
 
-    private CreateBookRequestDto getCreateBookRequestDto() {
-        CreateBookRequestDto createBookRequestDto = new CreateBookRequestDto();
-        createBookRequestDto.setTitle("Robots and Empire");
-        createBookRequestDto.setAuthor("Isaac Asimov");
-        createBookRequestDto.setIsbn("9780008277796");
-        createBookRequestDto.setPrice(BigDecimal.valueOf(360.00));
-        createBookRequestDto.setDescription("This is a sample book description. 1");
-        createBookRequestDto.setCoverImage("http://example.com/cover1.jpg");
-        createBookRequestDto.setCategoriesIds(List.of(1L));
-        return createBookRequestDto;
+    @WithMockUser(username = "user")
+    @Test
+    @DisplayName("")
+    void getAll() throws Exception {
+        //Given
+        List<BookDto> expectedListBookDto = getListBookDto();
+
+        //When
+        MvcResult result = mockMvc.perform(get("/books")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andReturn();
+        //Then
+        byte[] jsonResponse = result.getResponse().getContentAsByteArray();
+        BookDto[] bookDtoResponseArray = objectMapper.readValue(jsonResponse, BookDto[].class);
+        List<BookDto> actualBookDtoList = Arrays.stream(bookDtoResponseArray).toList();
+
+        Assertions.assertNotNull(actualBookDtoList);
+        Assertions.assertFalse(actualBookDtoList.isEmpty());
+        Assertions.assertEquals(expectedListBookDto, actualBookDtoList);
     }
 
-    private Book getBook(CreateBookRequestDto bookRequestDto) {
-        Book book = new Book();
-        book.setTitle(bookRequestDto.getTitle());
-        book.setAuthor(bookRequestDto.getAuthor());
-        book.setIsbn(bookRequestDto.getIsbn());
-        book.setPrice(bookRequestDto.getPrice());
-        book.setDescription(bookRequestDto.getDescription());
-        book.setCoverImage(bookRequestDto.getCoverImage());
-        return book;
+    private CreateBookRequestDto getBookRequestDto() {
+        CreateBookRequestDto bookRequestDto = new CreateBookRequestDto();
+        bookRequestDto.setTitle("Sample title 1");
+        bookRequestDto.setAuthor("Sample author 1");
+        bookRequestDto.setIsbn("978-617-12-3364-5");
+        bookRequestDto.setPrice(BigDecimal.valueOf(19.9));
+        bookRequestDto.setDescription("This is a sample book description.");
+        bookRequestDto.setCoverImage("http://example.com/cover.jpg");
+        bookRequestDto.setCategoriesIds(List.of(1L));
+        return bookRequestDto;
     }
 
-    private BookDto getBookDto(Book book) {
+    private CreateBookRequestDto getUpdateBookRequestDto() {
+        CreateBookRequestDto updateBookRequestDto = new CreateBookRequestDto();
+        updateBookRequestDto.setTitle("Sample title update");
+        updateBookRequestDto.setAuthor("Sample author update");
+        updateBookRequestDto.setIsbn("978-617-12-3364-9");
+        updateBookRequestDto.setPrice(BigDecimal.valueOf(20.99));
+        updateBookRequestDto.setDescription("This is a sample book description.");
+        updateBookRequestDto.setCoverImage("http://example.com/cover.jpg");
+        updateBookRequestDto.setCategoriesIds(List.of(1L));
+        return updateBookRequestDto;
+    }
+
+    private BookDto getBookDtoFromRequestDto(CreateBookRequestDto bookRequestDto) {
         BookDto bookDto = new BookDto();
-        bookDto.setTitle(book.getTitle());
-        bookDto.setAuthor(book.getAuthor());
-        bookDto.setIsbn(book.getIsbn());
-        bookDto.setPrice(book.getPrice());
-        bookDto.setDescription(book.getDescription());
-        bookDto.setCoverImage(book.getCoverImage());
+        bookDto.setTitle(bookRequestDto.getTitle());
+        bookDto.setAuthor(bookRequestDto.getAuthor());
+        bookDto.setIsbn(bookRequestDto.getIsbn());
+        bookDto.setPrice(bookRequestDto.getPrice());
+        bookDto.setDescription(bookRequestDto.getDescription());
+        bookDto.setCoverImage(bookRequestDto.getCoverImage());
+        bookDto.setCategoriesIds(List.of(1L));
         return bookDto;
+    }
+
+    private List<BookDto> getListBookDto() {
+        BookDto firstBookDto = new BookDto();
+        firstBookDto.setTitle("Robots and Empire");
+        firstBookDto.setAuthor("Isaac Asimov");
+        firstBookDto.setIsbn("9780008277796");
+        firstBookDto.setPrice(BigDecimal.valueOf(360.00));
+        firstBookDto.setDescription("This is a sample book description. 1");
+        firstBookDto.setCoverImage("http://example.com/cover1.jpg");
+        firstBookDto.setCategoriesIds(List.of(1L));
+
+        BookDto secondBookDto = new BookDto();
+        secondBookDto.setTitle("Murder on the Orient Express");
+        secondBookDto.setAuthor("Agatha Christie");
+        secondBookDto.setIsbn("978-0063160354");
+        secondBookDto.setPrice(BigDecimal.valueOf(13.99));
+        secondBookDto.setDescription("This is a sample book description. 2");
+        secondBookDto.setCoverImage("http://example.com/cover2.jpg");
+        secondBookDto.setCategoriesIds(List.of(2L));
+
+        return List.of(firstBookDto, secondBookDto);
     }
 }
