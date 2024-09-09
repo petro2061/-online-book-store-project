@@ -1,5 +1,12 @@
 package project.onlinebookstore.service.category.impl;
 
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
+import static org.mockito.Mockito.when;
+
 import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.Assertions;
@@ -9,7 +16,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentMatchers;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
@@ -40,8 +46,8 @@ class CategoryServiceImplTest {
         List<Category> categoryList = getCategoryList();
         List<CategoryDto> categoryDtoList = getCategoryDtoList();
 
-        Mockito.when(categoryRepository.findAll(pageable)).thenReturn(new PageImpl<>(categoryList));
-        Mockito.when(categoryMapper.toCategoryDto(ArgumentMatchers.any(Category.class)))
+        when(categoryRepository.findAll(pageable)).thenReturn(new PageImpl<>(categoryList));
+        when(categoryMapper.toCategoryDto(ArgumentMatchers.any(Category.class)))
                 .thenReturn(categoryDtoList.get(0));
 
         //When
@@ -50,10 +56,10 @@ class CategoryServiceImplTest {
         //Then
         Assertions.assertEquals(categoryDtoList, actualAllCategoryDtoList);
 
-        Mockito.verify(categoryRepository).findAll(pageable);
-        Mockito.verify(categoryMapper, Mockito.times(categoryList.size()))
+        verify(categoryRepository).findAll(pageable);
+        verify(categoryMapper, times(categoryList.size()))
                 .toCategoryDto(categoryList.get(0));
-        Mockito.verifyNoMoreInteractions(categoryRepository, categoryMapper);
+        verifyNoMoreInteractions(categoryRepository, categoryMapper);
     }
 
     @Test
@@ -64,8 +70,8 @@ class CategoryServiceImplTest {
         Category category = getCategory(getCreateCategoryRequestDto());
         CategoryDto categoryDto = getCategoryDto(category);
 
-        Mockito.when(categoryRepository.findById(categoryId)).thenReturn(Optional.of(category));
-        Mockito.when(categoryMapper.toCategoryDto(category)).thenReturn(categoryDto);
+        when(categoryRepository.findById(categoryId)).thenReturn(Optional.of(category));
+        when(categoryMapper.toCategoryDto(category)).thenReturn(categoryDto);
 
         //When
         CategoryDto actualCategoryDto = categoryServiceImpl.findById(categoryId);
@@ -73,9 +79,9 @@ class CategoryServiceImplTest {
         //Then
         Assertions.assertEquals(categoryDto, actualCategoryDto);
 
-        Mockito.verify(categoryRepository).findById(categoryId);
-        Mockito.verify(categoryMapper).toCategoryDto(category);
-        Mockito.verifyNoMoreInteractions(categoryRepository, categoryMapper);
+        verify(categoryRepository).findById(categoryId);
+        verify(categoryMapper).toCategoryDto(category);
+        verifyNoMoreInteractions(categoryRepository, categoryMapper);
     }
 
     @Test
@@ -84,16 +90,16 @@ class CategoryServiceImplTest {
         //Given
         Long notValidCategoryId = 1000L;
 
-        Mockito.when(categoryRepository.findById(notValidCategoryId))
+        when(categoryRepository.findById(notValidCategoryId))
                 .thenReturn(Optional.empty());
 
         //When
         Assertions.assertThrows(EntityNotFoundException.class,
                 () -> categoryServiceImpl.findById(notValidCategoryId));
 
-        Mockito.verify(categoryRepository).findById(notValidCategoryId);
-        Mockito.verify(categoryMapper, Mockito.never()).toCategoryDto(ArgumentMatchers.any());
-        Mockito.verifyNoMoreInteractions(categoryRepository, categoryMapper);
+        verify(categoryRepository).findById(notValidCategoryId);
+        verify(categoryMapper, never()).toCategoryDto(ArgumentMatchers.any());
+        verifyNoMoreInteractions(categoryRepository, categoryMapper);
     }
 
     @Test
@@ -104,9 +110,9 @@ class CategoryServiceImplTest {
         Category category = getCategory(createCategoryRequestDto);
         CategoryDto categoryDto = getCategoryDto(category);
 
-        Mockito.when(categoryMapper.toCategoryModel(createCategoryRequestDto)).thenReturn(category);
-        Mockito.when(categoryRepository.save(category)).thenReturn(category);
-        Mockito.when(categoryMapper.toCategoryDto(category)).thenReturn(categoryDto);
+        when(categoryMapper.toCategoryModel(createCategoryRequestDto)).thenReturn(category);
+        when(categoryRepository.save(category)).thenReturn(category);
+        when(categoryMapper.toCategoryDto(category)).thenReturn(categoryDto);
 
         //When
         CategoryDto actualCategoryDto = categoryServiceImpl.save(createCategoryRequestDto);
@@ -114,10 +120,10 @@ class CategoryServiceImplTest {
         //Then
         Assertions.assertEquals(categoryDto, actualCategoryDto);
 
-        Mockito.verify(categoryMapper).toCategoryModel(createCategoryRequestDto);
-        Mockito.verify(categoryRepository).save(category);
-        Mockito.verify(categoryMapper).toCategoryDto(category);
-        Mockito.verifyNoMoreInteractions(categoryRepository, categoryMapper);
+        verify(categoryMapper).toCategoryModel(createCategoryRequestDto);
+        verify(categoryRepository).save(category);
+        verify(categoryMapper).toCategoryDto(category);
+        verifyNoMoreInteractions(categoryRepository, categoryMapper);
     }
 
     @Test
@@ -130,11 +136,11 @@ class CategoryServiceImplTest {
         Category updateCategory = getCategory(updateCategoryRequestDto);
         CategoryDto categoryDto = getCategoryDto(getCategory(updateCategoryRequestDto));
 
-        Mockito.when(categoryRepository.findById(categoryId)).thenReturn(Optional.of(category));
-        Mockito.doNothing().when(categoryMapper)
+        when(categoryRepository.findById(categoryId)).thenReturn(Optional.of(category));
+        doNothing().when(categoryMapper)
                 .updateCategoryFromDto(updateCategoryRequestDto, category);
-        Mockito.when(categoryRepository.save(category)).thenReturn(updateCategory);
-        Mockito.when(categoryMapper.toCategoryDto(updateCategory)).thenReturn(categoryDto);
+        when(categoryRepository.save(category)).thenReturn(updateCategory);
+        when(categoryMapper.toCategoryDto(updateCategory)).thenReturn(categoryDto);
 
         //When
         CategoryDto actualUpdateCategory =
@@ -143,11 +149,11 @@ class CategoryServiceImplTest {
         //Then
         Assertions.assertEquals(categoryDto, actualUpdateCategory);
 
-        Mockito.verify(categoryRepository).findById(categoryId);
-        Mockito.verify(categoryMapper).updateCategoryFromDto(updateCategoryRequestDto, category);
-        Mockito.verify(categoryRepository).save(category);
-        Mockito.verify(categoryMapper).toCategoryDto(updateCategory);
-        Mockito.verifyNoMoreInteractions(categoryRepository, categoryMapper);
+        verify(categoryRepository).findById(categoryId);
+        verify(categoryMapper).updateCategoryFromDto(updateCategoryRequestDto, category);
+        verify(categoryRepository).save(category);
+        verify(categoryMapper).toCategoryDto(updateCategory);
+        verifyNoMoreInteractions(categoryRepository, categoryMapper);
     }
 
     @Test
@@ -157,16 +163,17 @@ class CategoryServiceImplTest {
         Long notValidCategoryId = 1000L;
         CreateCategoryRequestDto updateCategoryRequestDto = getUpdateCategoryRequestDto();
 
-        Mockito.when(categoryRepository.findById(notValidCategoryId)).thenReturn(Optional.empty());
-
         //When
+        when(categoryRepository.findById(notValidCategoryId)).thenReturn(Optional.empty());
+
+        //Then
         Assertions.assertThrows(EntityNotFoundException.class,
                 () -> categoryServiceImpl.update(notValidCategoryId, updateCategoryRequestDto));
 
-        Mockito.verify(categoryRepository).findById(notValidCategoryId);
-        Mockito.verify(categoryMapper, Mockito.never())
+        verify(categoryRepository).findById(notValidCategoryId);
+        verify(categoryMapper, never())
                 .updateCategoryFromDto(ArgumentMatchers.any(), ArgumentMatchers.any());
-        Mockito.verifyNoMoreInteractions(categoryRepository, categoryMapper);
+        verifyNoMoreInteractions(categoryRepository, categoryMapper);
     }
 
     @Test
@@ -178,8 +185,8 @@ class CategoryServiceImplTest {
         //When
         categoryServiceImpl.deleteById(categoryId);
 
-        Mockito.verify(categoryRepository).deleteById(categoryId);
-        Mockito.verifyNoMoreInteractions(categoryRepository);
+        verify(categoryRepository).deleteById(categoryId);
+        verifyNoMoreInteractions(categoryRepository);
     }
 
     private List<Category> getCategoryList() {
