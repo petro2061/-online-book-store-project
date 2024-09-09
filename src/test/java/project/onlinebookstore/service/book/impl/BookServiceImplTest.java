@@ -1,5 +1,12 @@
 package project.onlinebookstore.service.book.impl;
 
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
+import static org.mockito.Mockito.when;
+
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
@@ -11,7 +18,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentMatchers;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
@@ -50,9 +56,9 @@ class BookServiceImplTest {
         Book book = getBook(bookRequestDto);
         BookDto expectedBookDto = getBookDto(book);
 
-        Mockito.when(bookMapper.toBookModel(bookRequestDto)).thenReturn(book);
-        Mockito.when(bookRepository.save(book)).thenReturn(book);
-        Mockito.when(bookMapper.toBookDto(book)).thenReturn(expectedBookDto);
+        when(bookMapper.toBookModel(bookRequestDto)).thenReturn(book);
+        when(bookRepository.save(book)).thenReturn(book);
+        when(bookMapper.toBookDto(book)).thenReturn(expectedBookDto);
 
         //When
         BookDto actualBookDto = bookServiceImpl.save(bookRequestDto);
@@ -60,10 +66,10 @@ class BookServiceImplTest {
         //Then
         Assertions.assertEquals(actualBookDto, expectedBookDto);
 
-        Mockito.verify(bookMapper).toBookModel(bookRequestDto);
-        Mockito.verify(bookRepository).save(book);
-        Mockito.verify(bookMapper).toBookDto(book);
-        Mockito.verifyNoMoreInteractions(bookRepository, bookMapper);
+        verify(bookMapper).toBookModel(bookRequestDto);
+        verify(bookRepository).save(book);
+        verify(bookMapper).toBookDto(book);
+        verifyNoMoreInteractions(bookRepository, bookMapper);
     }
 
     @Test
@@ -74,8 +80,8 @@ class BookServiceImplTest {
         List<BookDto> bookDtoList = getListBookDto();
         Pageable pageable = PageRequest.of(0, 10);
 
-        Mockito.when(bookRepository.findAll(pageable)).thenReturn(new PageImpl<>(bookList));
-        Mockito.when(bookMapper.toBookDto(ArgumentMatchers.any(Book.class)))
+        when(bookRepository.findAll(pageable)).thenReturn(new PageImpl<>(bookList));
+        when(bookMapper.toBookDto(ArgumentMatchers.any(Book.class)))
                 .thenReturn(bookDtoList.get(0));
 
         //When
@@ -84,9 +90,9 @@ class BookServiceImplTest {
         //Then
         Assertions.assertEquals(bookDtoList, actualListDto);
 
-        Mockito.verify(bookRepository).findAll(pageable);
-        Mockito.verify(bookMapper, Mockito.times(bookDtoList.size())).toBookDto(bookList.get(0));
-        Mockito.verifyNoMoreInteractions(bookRepository, bookMapper);
+        verify(bookRepository).findAll(pageable);
+        verify(bookMapper, times(bookDtoList.size())).toBookDto(bookList.get(0));
+        verifyNoMoreInteractions(bookRepository, bookMapper);
     }
 
     @Test
@@ -97,8 +103,8 @@ class BookServiceImplTest {
         Book book = getBook(getCreateBookRequestDto());
         BookDto exspectedBookDto = getBookDto(book);
 
-        Mockito.when(bookRepository.findById(bookId)).thenReturn(Optional.of(book));
-        Mockito.when((bookMapper.toBookDto(book))).thenReturn(exspectedBookDto);
+        when(bookRepository.findById(bookId)).thenReturn(Optional.of(book));
+        when((bookMapper.toBookDto(book))).thenReturn(exspectedBookDto);
 
         //When
         BookDto actual = bookServiceImpl.findById(1L);
@@ -106,9 +112,9 @@ class BookServiceImplTest {
         //Then
         Assertions.assertEquals(exspectedBookDto, actual);
 
-        Mockito.verify(bookRepository).findById(bookId);
-        Mockito.verify(bookMapper).toBookDto(book);
-        Mockito.verifyNoMoreInteractions(bookRepository, bookMapper);
+        verify(bookRepository).findById(bookId);
+        verify(bookMapper).toBookDto(book);
+        verifyNoMoreInteractions(bookRepository, bookMapper);
     }
 
     @Test
@@ -117,16 +123,16 @@ class BookServiceImplTest {
         //Given
         Long notValidBookId = 200L;
 
-        Mockito.when(bookRepository.findById(notValidBookId))
+        when(bookRepository.findById(notValidBookId))
                 .thenReturn(Optional.empty());
 
         //When
         Assertions.assertThrows(EntityNotFoundException.class,
                 () -> bookServiceImpl.findById(notValidBookId));
 
-        Mockito.verify(bookRepository).findById(notValidBookId);
-        Mockito.verify(bookMapper, Mockito.never()).toBookDto(ArgumentMatchers.any());
-        Mockito.verifyNoMoreInteractions(bookRepository, bookMapper);
+        verify(bookRepository).findById(notValidBookId);
+        verify(bookMapper, never()).toBookDto(ArgumentMatchers.any());
+        verifyNoMoreInteractions(bookRepository, bookMapper);
     }
 
     @Test
@@ -138,8 +144,8 @@ class BookServiceImplTest {
         //When
         bookServiceImpl.deleteById(deleteBookId);
 
-        Mockito.verify(bookRepository).deleteById(deleteBookId);
-        Mockito.verifyNoMoreInteractions(bookRepository);
+        verify(bookRepository).deleteById(deleteBookId);
+        verifyNoMoreInteractions(bookRepository);
     }
 
     @Test
@@ -152,20 +158,20 @@ class BookServiceImplTest {
         BookDto updateBookDto = getUpdateBookDto(updateBook);
         Long updateBookId = 1L;
 
-        Mockito.when(bookRepository.findById(updateBookId)).thenReturn(Optional.of(book));
-        Mockito.doNothing().when(bookMapper).updateBookFromDto(bookRequestDto, book);
-        Mockito.when(bookRepository.save(book)).thenReturn(updateBook);
-        Mockito.when(bookMapper.toBookDto(updateBook)).thenReturn(updateBookDto);
+        when(bookRepository.findById(updateBookId)).thenReturn(Optional.of(book));
+        doNothing().when(bookMapper).updateBookFromDto(bookRequestDto, book);
+        when(bookRepository.save(book)).thenReturn(updateBook);
+        when(bookMapper.toBookDto(updateBook)).thenReturn(updateBookDto);
 
         BookDto bookDto = bookServiceImpl.updateById(updateBookId, bookRequestDto);
 
         Assertions.assertEquals(updateBookDto, bookDto);
 
-        Mockito.verify(bookRepository).findById(updateBookId);
-        Mockito.verify(bookMapper).updateBookFromDto(bookRequestDto, book);
-        Mockito.verify(bookRepository).save(book);
-        Mockito.verify(bookMapper).toBookDto(updateBook);
-        Mockito.verifyNoMoreInteractions(bookRepository, bookMapper);
+        verify(bookRepository).findById(updateBookId);
+        verify(bookMapper).updateBookFromDto(bookRequestDto, book);
+        verify(bookRepository).save(book);
+        verify(bookMapper).toBookDto(updateBook);
+        verifyNoMoreInteractions(bookRepository, bookMapper);
     }
 
     @Test
@@ -175,17 +181,17 @@ class BookServiceImplTest {
         CreateBookRequestDto bookRequestDto = getUpdateCreateRequestBookDto();
         Long notValidUpdateBookId = 1000L;
 
-        Mockito.when(bookRepository.findById(notValidUpdateBookId))
+        when(bookRepository.findById(notValidUpdateBookId))
                 .thenReturn(Optional.empty());
 
         //When
         Assertions.assertThrows(EntityNotFoundException.class,
                 () -> bookServiceImpl.updateById(notValidUpdateBookId, bookRequestDto));
 
-        Mockito.verify(bookRepository).findById(notValidUpdateBookId);
-        Mockito.verify(bookMapper, Mockito.never())
+        verify(bookRepository).findById(notValidUpdateBookId);
+        verify(bookMapper, never())
                 .updateBookFromDto(ArgumentMatchers.any(), ArgumentMatchers.any());
-        Mockito.verifyNoMoreInteractions(bookRepository, bookMapper);
+        verifyNoMoreInteractions(bookRepository, bookMapper);
     }
 
     @Test
@@ -204,11 +210,11 @@ class BookServiceImplTest {
         List<BookDto> bookDtoList = getListBookDto();
         Specification<Book> specification = bookSpecificationBuilder.build(bookSearchParameters);
 
-        Mockito.when(bookSpecificationBuilder.build(bookSearchParameters))
+        when(bookSpecificationBuilder.build(bookSearchParameters))
                 .thenReturn(specification);
-        Mockito.when(bookRepository.findAll(specification, pageable))
+        when(bookRepository.findAll(specification, pageable))
                 .thenReturn(new PageImpl<>(bookList));
-        Mockito.when(bookMapper.toBookDto(ArgumentMatchers.any(Book.class)))
+        when(bookMapper.toBookDto(ArgumentMatchers.any(Book.class)))
                 .thenReturn(bookDtoList.get(0));
 
         //When
@@ -218,10 +224,10 @@ class BookServiceImplTest {
         //Then
         Assertions.assertEquals(bookDtoList, actualBookDtoList);
 
-        Mockito.verify(bookRepository).findAll(specification, pageable);
-        Mockito.verify(bookMapper, Mockito.times(bookList.size()))
+        verify(bookRepository).findAll(specification, pageable);
+        verify(bookMapper, times(bookList.size()))
                 .toBookDto(ArgumentMatchers.any(Book.class));
-        Mockito.verifyNoMoreInteractions(bookRepository, bookMapper);
+        verifyNoMoreInteractions(bookRepository, bookMapper);
     }
 
     @Test
@@ -234,8 +240,8 @@ class BookServiceImplTest {
         List<BookDtoWithoutCategoryIds> bookDtoWithoutCategoryIdsList =
                 getBookDtoWithoutCategoryIds();
 
-        Mockito.when(bookRepository.findAllByCategoryId(categoryId, pageable)).thenReturn(bookList);
-        Mockito.when(bookMapper.toDtoWithoutCategories(ArgumentMatchers.any(Book.class)))
+        when(bookRepository.findAllByCategoryId(categoryId, pageable)).thenReturn(bookList);
+        when(bookMapper.toDtoWithoutCategories(ArgumentMatchers.any(Book.class)))
                 .thenReturn(bookDtoWithoutCategoryIdsList.get(0));
 
         //When
@@ -245,10 +251,10 @@ class BookServiceImplTest {
         //Then
         Assertions.assertEquals(bookDtoWithoutCategoryIdsList, actualAllBookListByCategoryId);
 
-        Mockito.verify(bookRepository).findAllByCategoryId(categoryId, pageable);
-        Mockito.verify(bookMapper, Mockito.times(bookList.size()))
+        verify(bookRepository).findAllByCategoryId(categoryId, pageable);
+        verify(bookMapper, times(bookList.size()))
                 .toDtoWithoutCategories(ArgumentMatchers.any(Book.class));
-        Mockito.verifyNoMoreInteractions(bookRepository, bookMapper);
+        verifyNoMoreInteractions(bookRepository, bookMapper);
     }
 
     private CreateBookRequestDto getCreateBookRequestDto() {
@@ -256,10 +262,11 @@ class BookServiceImplTest {
         createBookRequestDto.setTitle("Sample Book");
         createBookRequestDto.setAuthor("Author");
         createBookRequestDto.setIsbn("9781234567897");
-        createBookRequestDto.setPrice(BigDecimal.valueOf(40.31));
+        createBookRequestDto.setPrice(BigDecimal.valueOf(40.310));
         createBookRequestDto.setDescription("This is a sample book description.");
         createBookRequestDto.setCoverImage("https://example.com/cover1.jpg");
         createBookRequestDto.setCategoriesIds(List.of());
+
         return createBookRequestDto;
 
     }
@@ -272,6 +279,7 @@ class BookServiceImplTest {
         book.setPrice(bookRequestDto.getPrice());
         book.setDescription(bookRequestDto.getDescription());
         book.setCoverImage(bookRequestDto.getCoverImage());
+
         return book;
     }
 
@@ -284,6 +292,7 @@ class BookServiceImplTest {
         bookDto.setPrice(book.getPrice());
         bookDto.setDescription(book.getDescription());
         bookDto.setCoverImage(book.getTitle());
+
         return bookDto;
     }
 
@@ -293,7 +302,7 @@ class BookServiceImplTest {
         book.setTitle("Sample Book 1");
         book.setAuthor("Author A");
         book.setIsbn("9781234567897");
-        book.setPrice(BigDecimal.valueOf(19.99));
+        book.setPrice(BigDecimal.valueOf(19.990));
         book.setDescription("This is a sample book description.");
         book.setCoverImage("http://example.com/cover1.jpg");
         book.setCategories(Set.of());
@@ -307,7 +316,7 @@ class BookServiceImplTest {
         bookDto.setTitle("Sample Book 1");
         bookDto.setAuthor("Author A");
         bookDto.setIsbn("9781234567897");
-        bookDto.setPrice(BigDecimal.valueOf(19.99));
+        bookDto.setPrice(BigDecimal.valueOf(19.990));
         bookDto.setDescription("This is a sample book description.");
         bookDto.setCoverImage("http://example.com/cover1.jpg");
         bookDto.setCategoriesIds(List.of());
@@ -319,7 +328,8 @@ class BookServiceImplTest {
         CreateBookRequestDto updateBookRequestDto = getCreateBookRequestDto();
         updateBookRequestDto.setTitle("Sample Book 3");
         updateBookRequestDto.setAuthor("Author C");
-        updateBookRequestDto.setPrice(BigDecimal.valueOf(100.5));
+        updateBookRequestDto.setPrice(BigDecimal.valueOf(100.500));
+
         return updateBookRequestDto;
     }
 
@@ -351,7 +361,7 @@ class BookServiceImplTest {
         bookDtoWithoutCategoryIds.setTitle("Sample Book 1");
         bookDtoWithoutCategoryIds.setAuthor("Author A");
         bookDtoWithoutCategoryIds.setIsbn("9781234567897");
-        bookDtoWithoutCategoryIds.setPrice(BigDecimal.valueOf(19.99));
+        bookDtoWithoutCategoryIds.setPrice(BigDecimal.valueOf(19.990));
         bookDtoWithoutCategoryIds.setDescription("This is a sample book description.");
         bookDtoWithoutCategoryIds.setCoverImage("http://example.com/cover1.jpg");
 
