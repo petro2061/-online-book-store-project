@@ -3,7 +3,7 @@ package project.onlinebookstore.config;
 import org.testcontainers.containers.MySQLContainer;
 
 public class CustomMySqlContainer extends MySQLContainer<CustomMySqlContainer> {
-    private static final String DB_IMAGE = "mysql:8.0.32";
+    private static final String DB_IMAGE = "mysql:8.4";
 
     private static CustomMySqlContainer mySqlContainer;
 
