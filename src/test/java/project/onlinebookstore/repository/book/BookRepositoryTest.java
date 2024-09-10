@@ -1,7 +1,8 @@
 package project.onlinebookstore.repository.book;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import java.util.List;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,8 +42,8 @@ class BookRepositoryTest {
                 .findAllByCategoryId(categoryId, pageable);
 
         //Then
-        Assertions.assertEquals(1, allByCategoryId.size());
-        Assertions.assertEquals("Murder on the Orient Express",
+        assertEquals(1, allByCategoryId.size());
+        assertEquals("Murder on the Orient Express",
                 allByCategoryId.get(0).getTitle());
     }
 }

@@ -1,6 +1,11 @@
 package project.onlinebookstore.controller;
 
+import static java.util.Arrays.stream;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -13,14 +18,12 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.Arrays;
 import java.util.List;
 import javax.sql.DataSource;
 import lombok.SneakyThrows;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.assertj.core.util.DoubleComparator;
 import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.MethodOrderer;
@@ -116,10 +119,10 @@ class CategoryControllerTest {
         byte[] jsonResponse = result.getResponse().getContentAsByteArray();
         CategoryDto[] categoryDtoResponseArray =
                 objectMapper.readValue(jsonResponse, CategoryDto[].class);
-        List<CategoryDto> actualListCategoryDto = Arrays.stream(categoryDtoResponseArray).toList();
+        List<CategoryDto> actualListCategoryDto = stream(categoryDtoResponseArray).toList();
 
-        Assertions.assertFalse(actualListCategoryDto.isEmpty());
-        Assertions.assertEquals(2L, actualListCategoryDto.size());
+        assertFalse(actualListCategoryDto.isEmpty());
+        assertEquals(2L, actualListCategoryDto.size());
         assertThat(actualListCategoryDto)
                 .usingRecursiveComparison()
                 .ignoringFields("id")
@@ -147,9 +150,9 @@ class CategoryControllerTest {
         String jsonResponse = result.getResponse().getContentAsString();
         CategoryDto actualCategoryDto = objectMapper.readValue(jsonResponse, CategoryDto.class);
 
-        Assertions.assertNotNull(actualCategoryDto);
-        Assertions.assertNotNull(actualCategoryDto.id());
-        Assertions.assertTrue(EqualsBuilder
+        assertNotNull(actualCategoryDto);
+        assertNotNull(actualCategoryDto.id());
+        assertTrue(EqualsBuilder
                 .reflectionEquals(expectedCategoryDto, actualCategoryDto, "id"));
     }
 
@@ -172,8 +175,8 @@ class CategoryControllerTest {
         String jsonResponse = result.getResponse().getContentAsString();
         CategoryDto actualCategoryDto = objectMapper.readValue(jsonResponse, CategoryDto.class);
 
-        Assertions.assertNotNull(actualCategoryDto);
-        Assertions.assertTrue(EqualsBuilder
+        assertNotNull(actualCategoryDto);
+        assertTrue(EqualsBuilder
                 .reflectionEquals(expectedCategoryDto, actualCategoryDto, "id"));
     }
 
@@ -199,8 +202,8 @@ class CategoryControllerTest {
         String jsonResponse = result.getResponse().getContentAsString();
         CategoryDto actualCategoryDto = objectMapper.readValue(jsonResponse, CategoryDto.class);
 
-        Assertions.assertNotNull(actualCategoryDto);
-        Assertions.assertTrue(EqualsBuilder
+        assertNotNull(actualCategoryDto);
+        assertTrue(EqualsBuilder
                 .reflectionEquals(expectedCategoryDto, actualCategoryDto, "id"));
     }
 
@@ -228,10 +231,10 @@ class CategoryControllerTest {
         BookDtoWithoutCategoryIds[] bookDtoWithoutCategoryIdsArray =
                 objectMapper.readValue(jsonResponse, BookDtoWithoutCategoryIds[].class);
         List<BookDtoWithoutCategoryIds> actualBookDtoWithoutCategoryIds =
-                Arrays.stream(bookDtoWithoutCategoryIdsArray).toList();
+                stream(bookDtoWithoutCategoryIdsArray).toList();
 
-        Assertions.assertFalse(actualBookDtoWithoutCategoryIds.isEmpty());
-        Assertions.assertEquals(1L, actualBookDtoWithoutCategoryIds.size());
+        assertFalse(actualBookDtoWithoutCategoryIds.isEmpty());
+        assertEquals(1L, actualBookDtoWithoutCategoryIds.size());
         assertThat(actualBookDtoWithoutCategoryIds)
                 .usingRecursiveComparison()
                 .withComparatorForType(new DoubleComparator(0.001), Double.class)

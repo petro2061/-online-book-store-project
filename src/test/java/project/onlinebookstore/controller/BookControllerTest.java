@@ -1,6 +1,11 @@
 package project.onlinebookstore.controller;
 
+import static java.util.Arrays.stream;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -13,14 +18,12 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.Arrays;
 import java.util.List;
 import javax.sql.DataSource;
 import lombok.SneakyThrows;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.assertj.core.util.DoubleComparator;
 import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.MethodOrderer;
@@ -114,10 +117,10 @@ class BookControllerTest {
         //Then
         byte[] jsonResponse = result.getResponse().getContentAsByteArray();
         BookDto[] bookDtoResponseArray = objectMapper.readValue(jsonResponse, BookDto[].class);
-        List<BookDto> actualBookDtoList = Arrays.stream(bookDtoResponseArray).toList();
+        List<BookDto> actualBookDtoList = stream(bookDtoResponseArray).toList();
 
-        Assertions.assertFalse(actualBookDtoList.isEmpty());
-        Assertions.assertEquals(2L, actualBookDtoList.size());
+        assertFalse(actualBookDtoList.isEmpty());
+        assertEquals(2L, actualBookDtoList.size());
         assertThat(actualBookDtoList)
                 .usingRecursiveComparison()
                 .withComparatorForType(new DoubleComparator(0.001), Double.class)
@@ -146,9 +149,9 @@ class BookControllerTest {
         String jsonResponse = result.getResponse().getContentAsString();
         BookDto actualBookDto = objectMapper.readValue(jsonResponse, BookDto.class);
 
-        Assertions.assertNotNull(actualBookDto);
-        Assertions.assertNotNull(actualBookDto.getId());
-        Assertions.assertTrue(EqualsBuilder.reflectionEquals(expectedBookDto, actualBookDto, "id"));
+        assertNotNull(actualBookDto);
+        assertNotNull(actualBookDto.getId());
+        assertTrue(EqualsBuilder.reflectionEquals(expectedBookDto, actualBookDto, "id"));
     }
 
     @WithMockUser(username = "user")
@@ -169,8 +172,8 @@ class BookControllerTest {
         String jsonResponse = result.getResponse().getContentAsString();
         BookDto actualBookDto = objectMapper.readValue(jsonResponse, BookDto.class);
 
-        Assertions.assertNotNull(actualBookDto);
-        Assertions.assertTrue(EqualsBuilder.reflectionEquals(expectedBookDto, actualBookDto, "id"));
+        assertNotNull(actualBookDto);
+        assertTrue(EqualsBuilder.reflectionEquals(expectedBookDto, actualBookDto, "id"));
     }
 
     @WithMockUser(username = "user")
@@ -196,10 +199,10 @@ class BookControllerTest {
         //Then
         byte[] jsonResponse = result.getResponse().getContentAsByteArray();
         BookDto[] bookDtoResponseArray = objectMapper.readValue(jsonResponse, BookDto[].class);
-        List<BookDto> actualBookDtoList = Arrays.stream(bookDtoResponseArray).toList();
+        List<BookDto> actualBookDtoList = stream(bookDtoResponseArray).toList();
 
-        Assertions.assertNotNull(actualBookDtoList);
-        Assertions.assertTrue(EqualsBuilder
+        assertNotNull(actualBookDtoList);
+        assertTrue(EqualsBuilder
                 .reflectionEquals(expectedSearchBookdto, actualBookDtoList.get(0), "id"));
     }
 
@@ -224,8 +227,8 @@ class BookControllerTest {
         String jsonResponse = result.getResponse().getContentAsString();
         BookDto actualBookDto = objectMapper.readValue(jsonResponse, BookDto.class);
 
-        Assertions.assertNotNull(actualBookDto);
-        Assertions.assertTrue(EqualsBuilder.reflectionEquals(expectedBookDto, actualBookDto, "id"));
+        assertNotNull(actualBookDto);
+        assertTrue(EqualsBuilder.reflectionEquals(expectedBookDto, actualBookDto, "id"));
     }
 
     @WithMockUser(username = "admin", roles = {"ADMIN"})
