@@ -1,6 +1,5 @@
 package project.onlinebookstore.service.user.impl;
 
-import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import java.util.Set;
 import lombok.RequiredArgsConstructor;
@@ -8,6 +7,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import project.onlinebookstore.dto.user.UserRegistrationRequestDto;
 import project.onlinebookstore.dto.user.UserResponseDto;
+import project.onlinebookstore.exception.EntityNotFoundException;
 import project.onlinebookstore.exception.RegistrationException;
 import project.onlinebookstore.mapper.UserMapper;
 import project.onlinebookstore.model.Role;

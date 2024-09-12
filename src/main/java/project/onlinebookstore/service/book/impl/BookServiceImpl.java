@@ -1,6 +1,5 @@
 package project.onlinebookstore.service.book.impl;
 
-import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -11,6 +10,7 @@ import project.onlinebookstore.dto.book.BookDto;
 import project.onlinebookstore.dto.book.BookDtoWithoutCategoryIds;
 import project.onlinebookstore.dto.book.BookSearchParameters;
 import project.onlinebookstore.dto.book.CreateBookRequestDto;
+import project.onlinebookstore.exception.EntityNotFoundException;
 import project.onlinebookstore.mapper.BookMapper;
 import project.onlinebookstore.model.Book;
 import project.onlinebookstore.repository.book.BookRepository;

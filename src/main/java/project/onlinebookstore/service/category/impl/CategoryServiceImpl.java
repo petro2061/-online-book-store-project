@@ -1,6 +1,5 @@
 package project.onlinebookstore.service.category.impl;
 
-import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -8,6 +7,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import project.onlinebookstore.dto.category.CategoryDto;
 import project.onlinebookstore.dto.category.CreateCategoryRequestDto;
+import project.onlinebookstore.exception.EntityNotFoundException;
 import project.onlinebookstore.mapper.CategoryMapper;
 import project.onlinebookstore.model.Category;
 import project.onlinebookstore.repository.category.CategoryRepository;
