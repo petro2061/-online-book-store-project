@@ -83,3 +83,55 @@ Since the project uses Spring Security, you'll need to log in with the following
 ##### Password: admin_12345!
 
 Make sure to replace yourpassword with the actual password you set up in your environment variables.
+
+## 📚 API Endpoints
+The API is organized into several main categories: **Authentication**, **Book**, **Category**, **Order**, and **Shopping Cart**. Below is a detailed overview of each endpoint.
+
+### 🔑 Authentication
+
+#### Register a New User
+- **Endpoint**: `POST /api/auth/registration`
+- **Description**: Registers a new user. Accessible without any role.
+- **Example Link**: [http://localhost:8080/api/auth/registration](http://localhost:8080/api/auth/registration)
+- **Request Body**:
+  ```json
+  {
+    "email": "bob@example.com",
+    "password": "12345678",
+    "repeatPassword": "12345678",
+    "firstName": "Bob",
+    "lastName": "Alison",
+    "shippingAddress": "Bob's address"
+  }
+  ```
+- **Response**:
+  - **Status Code**: `201 Created`
+  - **Body**:
+  ```json
+  {
+    "id": 1,
+    "email": "bob@example.com",
+    "firstName": "Bob",
+    "lastName": "Alison",
+    "shippingAddress": "Bob's address"
+  }
+  ```
+#### User Login
+- **Endpoint**: `POST /api/auth/login`
+- **Description**: Logs in a registered user. Accessible for all users.
+- **Example Link**: [http://localhost:8080/api/auth/login](http://localhost:8080/api/auth/login)
+- **Request Body**:
+  ```json
+  {
+    "email": "bob@example.com",
+    "password": "12345678"
+  }
+  ```
+- **Response**:
+  - **Status Code**: `200 Ok`
+  - **Body**:
+   ```json
+  {
+  "token": "your_jwt_token_here"
+  }
+  ```
