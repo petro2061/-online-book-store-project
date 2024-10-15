@@ -135,3 +135,100 @@ The API is organized into several main categories: **Authentication**, **Book**,
   "token": "your_jwt_token_here"
   }
   ```
+### 📖 Book
+
+#### Get All Books
+- **Endpoint**: `GET /api/books`
+- **Description**: Returns a list of all stored books. Accessible for roles **User** and **Admin**.
+- **Example Link**: [http://localhost:8080/api/books](http://localhost:8080/api/books)
+- **Response**:
+  - **Status Code**: `200 OK`
+  - **Body** (example):
+  ```json
+  [
+    {
+      "id": 1,
+      "title": "The Great Gatsby",
+      "author": "F. Scott Fitzgerald",
+      "price": 10.99,
+      "category": "Fiction",
+      "description": "A classic novel about the American dream."
+    }
+  ]
+  ```
+  #### Get Book by ID
+- **Endpoint**: `GET /api/books/{id}`
+- **Description**: Returns a book by the specified ID. Accessible for roles **User** and **Admin**.
+- **Example Link**: [http://localhost:8080/api/books/1](http://localhost:8080/api/books/1)
+- **Response**:
+  - **Status Code**: `200 OK`
+  - **Body** (example):
+ ```json
+  [
+    {
+  "id": 1,
+  "title": "White Fang",
+  "author": "Jack London",
+  "isbn": "00000000000001",
+  "price": 19.90,
+  "description": "Book about adventure",
+  "coverImage": "http://example.com/whiteFang.jpg",
+  "categoryIds": [1]
+    }
+]
+```
+#### Search Books
+- **Endpoint**: `GET /api/books/search`
+- **Description**: Searches books using specified parameters. Accessible for roles User and Admin.
+- **Example Link**: [http://localhost:8080/api/books/search?titles=White%20Fang&author=Jack%20London](http://localhost:8080/api/books/search?titles=White%20Fang&author=Jack%20London)
+- **Response**:
+  - **Status Code**: `200 OK`
+  - **Body** (example):
+```json
+[
+  {
+    "id": 1,
+    "title": "White Fang",
+    "author": "Jack London",
+    "isbn": "00000000000001",
+    "price": 19.90,
+    "description": "Book about adventure",
+    "coverImage": "http://example.com/whiteFang.jpg",
+    "categoryIds": [1]
+  }
+]
+```
+#### Create a New Book
+- **Endpoint**: `POST /api/books`
+- **Description**: Creates a new book in the database. Accessible for role Admin. **WARNING! Before adding a book, the corresponding category must be added**
+- **Example Link**: http://localhost:8080/api/books
+- **Request Body**:
+```json
+[
+  {
+  "title": "New Book",
+  "author": "New Author",
+  "isbn": "00000000000002",
+  "price": 29.99,
+  "description": "New description",
+  "coverImage": "https://example.com/newbook-cover-image.jpg"
+}
+]
+```
+- **Response**:
+  - **Status Code**: `201 Created`
+  - **Body** (example):
+```json
+ [ 
+  {
+  "id": 1,
+  "title": "New Book",
+  "author": "New Author",
+  "isbn": "00000000000002",
+  "price": 29.99,
+  "description": "New description",
+  "coverImage": "https://example.com/newbook-cover-image.jpg",
+  "categoryIds": [1]
+  }
+]
+```
