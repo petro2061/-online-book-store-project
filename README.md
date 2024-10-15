@@ -40,12 +40,12 @@ Before you begin, ensure you have met the following requirements:
 
 ### Installation
 
-#### 1.Clone the Repository
+#### 1. Clone the Repository
 ```bash
 git clone https://github.com/your-username/online-book-store.git
 cd online-book-store
 ```
-#### 2.Configure Environment Variables
+#### 2. Configure Environment Variables
 Create a `.env` file in the root directory and add the necessary environment variables:
 ```env
 SPRING_DATASOURCE_URL=jdbc:mysql://localhost:3306/bookstore
@@ -53,26 +53,26 @@ SPRING_DATASOURCE_USERNAME=root
 SPRING_DATASOURCE_PASSWORD=yourpassword
 JWT_SECRET=your_jwt_secret_key
 ```
-#### 3.Set Up the Database
+#### 3. Set Up the Database
 Ensure MySQL is running and create a database named `bookstore`. You can use Docker to set up MySQL:
 ```bash
 docker run --name mysql-bookstore -e MYSQL_ROOT_PASSWORD=yourpassword -e MYSQL_DATABASE=bookstore -p 3306:3306 -d mysql:8.0
 ```
-#### 4.Apply Database Migrations
+#### 4. Apply Database Migrations
 The project uses Liquibase for database migrations. Migrations will be applied automatically when the application starts.
 
 ### Running the Project
 
-#### 1.Build the Project
+#### 1. Build the Project
 ```bash
 mvn clean install
 ```
-#### 2.Run the Application
+#### 2. Run the Application
 ```bash
 mvn spring-boot:run
 ```
 The application will start on http://localhost:8080.
-#### 3.Access Swagger UI
+#### 3. Access Swagger UI
 For API documentation and testing, navigate to:
 ```bash
 http://localhost:8080/swagger-ui.html
@@ -156,7 +156,7 @@ The API is organized into several main categories: **Authentication**, **Book**,
     }
   ]
   ```
-  #### Get Book by ID
+#### Get Book by ID
 - **Endpoint**: `GET /api/books/{id}`
 - **Description**: Returns a book by the specified ID. Accessible for roles **User** and **Admin**.
 - **Example Link**: [http://localhost:8080/api/books/1](http://localhost:8080/api/books/1)
@@ -164,8 +164,7 @@ The API is organized into several main categories: **Authentication**, **Book**,
   - **Status Code**: `200 OK`
   - **Body** (example):
  ```json
-  [
-    {
+{
   "id": 1,
   "title": "White Fang",
   "author": "Jack London",
@@ -174,8 +173,7 @@ The API is organized into several main categories: **Authentication**, **Book**,
   "description": "Book about adventure",
   "coverImage": "http://example.com/whiteFang.jpg",
   "categoryIds": [1]
-    }
-]
+}
 ```
 #### Search Books
 - **Endpoint**: `GET /api/books/search`
@@ -195,7 +193,7 @@ The API is organized into several main categories: **Authentication**, **Book**,
     "description": "Book about adventure",
     "coverImage": "http://example.com/whiteFang.jpg",
     "categoryIds": [1]
-  }
+  },
 ]
 ```
 #### Create a New Book
@@ -204,8 +202,7 @@ The API is organized into several main categories: **Authentication**, **Book**,
 - **Example Link**: http://localhost:8080/api/books
 - **Request Body**:
 ```json
-[
-  {
+{
   "title": "New Book",
   "author": "New Author",
   "isbn": "00000000000002",
@@ -213,14 +210,12 @@ The API is organized into several main categories: **Authentication**, **Book**,
   "description": "New description",
   "coverImage": "https://example.com/newbook-cover-image.jpg"
 }
-]
 ```
 - **Response**:
   - **Status Code**: `201 Created`
   - **Body** (example):
 ```json
- [ 
-  {
+{
   "id": 1,
   "title": "New Book",
   "author": "New Author",
@@ -229,6 +224,41 @@ The API is organized into several main categories: **Authentication**, **Book**,
   "description": "New description",
   "coverImage": "https://example.com/newbook-cover-image.jpg",
   "categoryIds": [1]
-  }
-]
+}
 ```
+#### Update a Book
+- **Endpoint**: `PUT /api/books/{id}`
+- **Description**: Updates the book with the specified ID. Accessible for role **Admin**.
+- **Example Link**: [http://localhost:8080/api/books/1](http://localhost:8080/api/books/1)
+- **Request Body**:
+```json
+{
+  "title": "Shantaram",
+  "author": "Greg David Roberts",
+  "isbn": "00000000000003",
+  "price": 27.90,
+  "description": "Book about adventure",
+  "coverImage": "https://example.com/shantaram-cover-image.jpg"
+}
+```
+- **Response**:
+  - **Status Code**:  `202 Accepted`
+  - **Body** (example):
+```json
+{
+  "id": 1,
+  "title": "Shantaram",
+  "author": "Greg David Roberts",
+  "isbn": "00000000000003",
+  "price": 27.90,
+  "description": "Book about adventure",
+  "coverImage": "https://example.com/shantaram-cover-image.jpg",
+  "categoryIds": [2]
+}
+```
+#### Delete a Book
+- **Endpoint**: `DELETE /api/books/{id}`
+- **Description**: Soft-deletes a book with the specified ID from the database. Accessible for role Admin.
+- **Example Link**: [http://localhost:8080/api/books/1](http://localhost:8080/api/books/1)
+- **Response**:
+  - **Status Code**: 200 OK
