@@ -78,9 +78,8 @@ For API documentation and testing, navigate to:
 http://localhost:8080/swagger-ui.html
 ```
 Since the project uses Spring Security, you'll need to log in with the following credentials:
-
-##### Username: admin@gmail.com
-##### Password: admin_12345!
+**Username: admin@gmail.com**
+**Password: admin_12345!**
 
 Make sure to replace yourpassword with the actual password you set up in your environment variables.
 
@@ -105,7 +104,7 @@ The API is organized into several main categories: **Authentication**, **Book**,
   }
   ```
 - **Response**:
-  - **Status Code**: `201 Created`
+  - **Status Code**: `200 Ok`
   - **Body**:
   ```json
   {
@@ -153,6 +152,7 @@ The API is organized into several main categories: **Authentication**, **Book**,
       "price": 10.99,
       "category": "Fiction",
       "description": "A classic novel about the American dream."
+      "categoriesIds": [1]
     }
   ]
   ```
@@ -177,7 +177,7 @@ The API is organized into several main categories: **Authentication**, **Book**,
 ```
 #### Search Books
 - **Endpoint**: `GET /api/books/search`
-- **Description**: Searches books using specified parameters. Accessible for roles User and Admin.
+- **Description**: Searches books using specified parameters. Accessible for roles **User** and **Admin**.
 - **Example Link**: [http://localhost:8080/api/books/search?titles=White%20Fang&author=Jack%20London](http://localhost:8080/api/books/search?titles=White%20Fang&author=Jack%20London)
 - **Response**:
   - **Status Code**: `200 OK`
@@ -198,7 +198,7 @@ The API is organized into several main categories: **Authentication**, **Book**,
 ```
 #### Create a New Book
 - **Endpoint**: `POST /api/books`
-- **Description**: Creates a new book in the database. Accessible for role Admin. **WARNING! Before adding a book, the corresponding category must be added**
+- **Description**: Creates a new book in the database. Accessible for role **Admin**. **WARNING! Before adding a book, the corresponding category must be added**
 - **Example Link**: http://localhost:8080/api/books
 - **Request Body**:
 ```json
@@ -209,10 +209,11 @@ The API is organized into several main categories: **Authentication**, **Book**,
   "price": 29.99,
   "description": "New description",
   "coverImage": "https://example.com/newbook-cover-image.jpg"
+  "categoriesIds": [1]
 }
 ```
 - **Response**:
-  - **Status Code**: `201 Created`
+  - **Status Code**: `200 Ok`
   - **Body** (example):
 ```json
 {
@@ -239,10 +240,11 @@ The API is organized into several main categories: **Authentication**, **Book**,
   "price": 27.90,
   "description": "Book about adventure",
   "coverImage": "https://example.com/shantaram-cover-image.jpg"
+   "categoryIds": [1]
 }
 ```
 - **Response**:
-  - **Status Code**:  `202 Accepted`
+  - **Status Code**: `200 Ok`
   - **Body** (example):
 ```json
 {
@@ -253,12 +255,57 @@ The API is organized into several main categories: **Authentication**, **Book**,
   "price": 27.90,
   "description": "Book about adventure",
   "coverImage": "https://example.com/shantaram-cover-image.jpg",
-  "categoryIds": [2]
+  "categoryIds": [1]
 }
 ```
 #### Delete a Book
 - **Endpoint**: `DELETE /api/books/{id}`
-- **Description**: Soft-deletes a book with the specified ID from the database. Accessible for role Admin.
+- **Description**: Soft-deletes a book with the specified ID from the database. Accessible for role **Admin**.
 - **Example Link**: [http://localhost:8080/api/books/1](http://localhost:8080/api/books/1)
 - **Response**:
-  - **Status Code**: 200 OK
+  - **Status Code**: `204 No content`
+
+### 📜 Category
+
+#### Create a New Category
+- **Endpoint**: `POST /api/categories`
+- **Description**: Creates a new category. Accessible for role **Admin**.
+- **Example Link**: [http://localhost:8080/api/categories](http://localhost:8080/api/categories)
+- **Request Body**:
+```json
+{
+  "name": "Adventures",
+  "description": "Books about adventures"
+}
+```
+- **Response**:
+  - **Status Code**: `200 Ok`
+  - **Body** (example):
+```json
+{
+  "id": 1,
+  "name": "Adventures",
+  "description": "Books about adventures"
+}
+```
+#### Get All Categories
+- **Endpoint**: `GET /api/categories`
+- **Description**: Returns a list of all categories from the database. Accessible for roles **User** and **Admin**.
+- **Example Link**: [http://localhost:8080/api/categories](http://localhost:8080/api/categories)
+- **Response**:
+  - **Status Code**: `200 Ok`
+  - **Body** (example):
+```json
+[
+  {
+    "id": 1,
+    "name": "Adventures",
+    "description": "Books about adventures"
+  },
+  {
+    "id": 2,
+    "name": "History",
+    "description": "Books describing historical periods"
+  }
+]
+```
