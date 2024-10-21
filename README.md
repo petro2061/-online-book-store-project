@@ -531,3 +531,113 @@ The API is organized into several main categories: **Authentication**, **Book**,
   }
 ]
 ```
+#### Add Book to Shopping Cart
+- **Endpoint**: `POST /api/cart`
+- **Description**: Adds a book to the shopping cart of the logged-in user.
+- **Example Link**: [http://localhost:8080/api/cart](http://localhost:8080/api/cart)
+- **Request Body**:
+```json
+[
+  {
+  "bookId": 2,
+  "quantity": 3
+  }
+]
+```
+- **Response**:
+  - **Status Code**: `200 Ok`
+  - **Body** (example):
+```json
+[
+  {
+  "id": 3,
+  "userId": 2,
+  "cartItemsIds": [4, 5, 6, 7]
+  }
+]
+```
+#### Update Cart Item Quantity
+- **Endpoint**: `PUT /api/cart/items/{cartItemId}`
+- **Description**: Changes the quantity of a cart item with the specified ID.
+- **Example Link**: [http://localhost:8080/api/cart/items/1](http://localhost:8080/api/cart/items/1)
+- **Request Body**:
+```json
+[
+  {
+  "quantity": 2
+  }
+]
+```
+- **Response**:
+  - **Status Code**: `200 Ok`
+  - **Body** (example):
+```json
+[
+  {
+  "bookId": 3,
+  "quantity": 2
+  }
+]
+```
+#### Delete Cart Item
+- **Endpoint**: `DELETE /api/cart/items/{cartItemId}`
+- **Description**: Soft-deletes a cart item with the specified ID.
+- **Example Link**: [http://localhost:8080/api/cart/items/3](http://localhost:8080/api/cart/items/3)
+- **Response**:
+  - **Status Code**: `204 No content`
+
+## ❓ Challenges and Solutions 💪
+
+One of the most challenging aspects of this project was integrating all the components into a cohesive and functional system. Coordinating various technologies and ensuring seamless interaction between different modules required meticulous planning and execution. However, through systematic work and the unwavering support of our mentors, we successfully implemented the project.
+
+Despite this being my first project of this nature during my practice, the process was incredibly rewarding and educational. It allowed me to apply theoretical knowledge in a practical setting, consolidating my understanding and skills. I am excited about future projects and opportunities to further enhance my abilities and deepen my knowledge.
+
+## 🌼 Possible Improvements
+
+Here are some suggestions for future enhancements to the website:
+
+### 👍 Improved User Experience
+- Continuously refine the interface and user experience to make browsing, searching, and purchasing books more intuitive and enjoyable.
+- Conduct user surveys or usability testing to gather feedback and identify areas for improvement.
+
+### 😃 Personalized Features
+- Implement personalized recommendations based on users' browsing history, reading preferences, and past purchases.
+- Enhance the user experience by helping users discover new books that match their interests.
+
+### 📱 Mobile Optimization
+- Ensure the website is fully optimized for mobile devices to cater to users who prefer accessing the site via smartphones or tablets.
+- Implement responsive design and mobile-friendly features to improve accessibility and engagement.
+
+### 🤝 Social Integration
+- Integrate social media features allowing users to share their favorite books, reviews, and recommendations with friends and followers.
+- Increase website visibility and attract new users through referrals within users' social circles.
+
+### 👨‍👩‍👦 Community Engagement
+- Foster a sense of community among users by adding features like book clubs, discussion forums, or Q&A sessions with authors.
+- Create opportunities for interaction and collaboration to improve user retention and loyalty.
+
+### 📚 Expanded Catalog
+- Continuously expand and diversify the book catalog to cater to a wider range of interests and tastes.
+- Regularly add new titles, genres, and authors to keep users engaged and encourage repeat visits.
+
+### 🚚 Checkout Streamlining
+- Simplify the checkout process to minimize cart abandonment.
+- Implement features like one-click purchase, multiple payment options, and guest checkout to make the purchasing process as convenient as possible.
+
+### 💪 Performance Optimization
+- Continuously monitor and optimize website performance to ensure fast loading times and smooth interactions.
+- Implement caching strategies, optimize database queries, and use content delivery networks (CDNs) to enhance performance.
+
+## 📞 Contact
+
+If you have any questions or feedback, feel free to reach out:
+
+- **Email**: [petro.fenyak@gmail.com](mailto:petro.fenyak@gmail.com)
+- **GitHub**: [petro2061](https://github.com/petro2061)
+- **LinkedIn**: [Petro Feniak](https://www.linkedin.com/in/petro-feniak-36229813b)
+
+---
+
+Thank you for checking out the **Online Book Store** project! We hope it provides a delightful experience for all book lovers.
+
+---
