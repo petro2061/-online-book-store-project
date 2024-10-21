@@ -309,3 +309,225 @@ The API is organized into several main categories: **Authentication**, **Book**,
   }
 ]
 ```
+#### Get Books by Category
+- **Endpoint**: `GET /api/categories/{id}/books`
+- **Description**: Returns a list of books that belong to a specific category. Accessible for roles **User**.
+- **Example Link**: [http://localhost:8080/api/categories/1/books](http://localhost:8080/api/categories/1/books)
+- **Response**:
+  - **Status Code**: `200 Ok`
+  - **Body** (example):
+```json
+[
+  {
+    "id": 1,
+    "title": "White Fang",
+    "author": "Jack London",
+    "isbn": "00000000000001",
+    "price": 19.90,
+    "description": "Book about adventure",
+    "coverImage": "http://example.com/whiteFang.jpg"
+  },
+  {
+    "id": 3,
+    "title": "Shantaram",
+    "author": "Greg David Roberts",
+    "isbn": "00000000000003",
+    "price": 27.90,
+    "description": "Book about adventure",
+    "coverImage": "https://example.com/shantaram-cover-image.jpg"
+  }
+]
+```
+#### Update a Category
+- **Endpoint**: `PUT /api/categories/{id}`
+- **Description**: Updates the category with the specified ID. Accessible for role **Admin**.
+- **Example Link**: [http://localhost:8080/api/categories/1](http://localhost:8080/api/categories/1)
+- **Request Body**:
+```json
+[
+  {
+  "name": "Updated Category",
+  "description": "Updated description"
+  }
+]
+```
+- **Response**:
+  - **Status Code**: `200 Ok`
+  - **Body** (example):
+```json
+[
+  {
+  "id": 1,
+  "name": "Updated Category",
+  "description": "Updated description"
+  }
+]
+```
+#### Delete a Category
+- **Endpoint**: `DELETE /api/categories/{id}`
+- **Description**: Soft-deletes the category with the specified ID. Accessible for role **Admin**.
+- **Example Link**: [http://localhost:8080/api/categories/1](http://localhost:8080/api/categories/1)
+- **Response**:
+  - **Status Code**: `204 No content`
+
+ ### 🧾 Order
+
+#### Get All Orders
+- **Endpoint**: `GET /api/orders`
+- **Description**: Returns a list of all orders. Accessible for roles **User** and **Admin**.
+- **Example Link**: [http://localhost:8080/api/orders](http://localhost:8080/api/orders)
+- **Response**:
+  - **Status Code**: `200 Ok`
+  - **Body** (example):
+```json
+[
+  {
+    "id": 1,
+    "userId": 1,
+    "orderItems": [
+      {
+        "id": 1,
+        "bookId": 1,
+        "quantity": 1
+      },
+      {
+        "id": 2,
+        "bookId": 2,
+        "quantity": 2
+      }
+    ],
+    "orderDate": "2024-03-08T17:53:05",
+    "total": 46.80,
+    "status": "PENDING"
+  }
+]
+```
+#### Get Order Items
+- **Endpoint**: `GET /api/orders/{orderId}/items`
+- **Description**: Returns a list of items in a specific order. Accessible for roles **User** and **Admin**.
+- **Example Link**: [http://localhost:8080/api/orders/1/items](http://localhost:8080/api/orders/1/items)
+- **Response**:
+  - **Status Code**: `200 Ok`
+  - **Body** (example):
+```json
+[
+  {
+    "id": 1,
+    "bookId": 1,
+    "quantity": 1
+  },
+  {
+    "id": 2,
+    "bookId": 2,
+    "quantity": 2
+  }
+]
+```
+#### Get Specific Order Item
+- **Endpoint**: `GET /api/orders/{orderId}/items/{itemId}`
+- **Description**: Returns a specific item from a specific order. Accessible for roles **User** and **Admin**.
+- **Example Link**: [http://localhost:8080/api/orders/1/items/2](http://localhost:8080/api/orders/1/items/2)
+- **Response**:
+  - **Status Code**: `200 Ok`
+  - **Body** (example):
+```json
+{
+  "id": 2,
+  "bookId": 2,
+  "quantity": 2
+}
+```
+#### Create a New Order
+- **Endpoint**: `POST /api/orders`
+- **Description**: Creates a new order. Accessible for roles **User** and **Admin**.
+- **Example Link**: [http://localhost:8080/api/orders](http://localhost:8080/api/orders)
+- **Request Body**:
+```json
+[
+  {
+  "shippingAddress": "Some address"
+  }
+]
+```
+- **Response**:
+  - **Status Code**: `200 Ok`
+  - **Body** (example):
+```json
+[
+  {
+  "id": 1,
+  "userId": 1,
+  "orderItems": [
+    {
+      "id": 1,
+      "bookId": 1,
+      "quantity": 1
+    },
+    {
+      "id": 2,
+      "bookId": 2,
+      "quantity": 2
+    }
+  ],
+  "orderDate": "2024-03-08T17:53:05",
+  "total": 46.80,
+  "status": "PENDING"
+  }
+]
+```
+#### Update Order Status
+- **Endpoint**: `PATCH /api/orders/{id}`
+- **Description**: Updates the status of an order. Accessible for role **Admin**.
+- **Example Link**: [http://localhost:8080/api/orders/1](http://localhost:8080/api/orders/1)
+- **Request Body**:
+```json
+[
+  {
+  "status": "DELIVERED"
+  }
+]
+```
+- **Response**:
+  - **Status Code**: `200 Ok`
+  - **Body** (example):
+```json
+[
+  {
+  "id": 1,
+  "userId": 1,
+  "orderItems": [
+    {
+      "id": 1,
+      "bookId": 1,
+      "quantity": 1
+    },
+    {
+      "id": 2,
+      "bookId": 2,
+      "quantity": 2
+    }
+  ],
+  "orderDate": "2024-03-08T17:53:05",
+  "total": 46.80,
+  "status": "DELIVERED"
+}
+]
+```
+ ### 🛒 Shopping Cart
+
+#### Get Shopping Cart
+- **Endpoint**: `GET /api/cart`
+- **Description**: Returns the shopping cart of the logged-in user.
+- **Example Link**: [http://localhost:8080/api/cart](http://localhost:8080/api/cart)
+- **Response**:
+  - **Status Code**: `200 Ok`
+  - **Body** (example):
+```json
+[
+  {
+  "id": 2,
+  "userId": 2,
+  "cartItemsIds": [3, 4]
+  }
+]
+```
